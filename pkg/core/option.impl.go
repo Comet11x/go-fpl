@@ -21,6 +21,14 @@ func (o *option[T]) UnwrapOr(value T) T {
 	}
 }
 
+func (o *option[T]) UnwrapOrPtr(value *T) *T {
+	if o.IsNone() {
+		return value
+	} else {
+		return &o.value
+	}
+}
+
 func (o *option[T]) Unwrap() T {
 	return o.value
 }
@@ -32,5 +40,11 @@ func (o *option[T]) UnwrapPtr() *T {
 func (o *option[T]) Swap(value T) T {
 	prev := o.value
 	o.value = value
+	return prev
+}
+
+func (o *option[T]) SwapFromPtr(value *T) T {
+	prev := o.value
+	o.value = *value
 	return prev
 }
