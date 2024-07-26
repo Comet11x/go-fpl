@@ -1,10 +1,12 @@
 package core
 
 type Either[A any, B any] interface {
-	IsRight() bool
 	IsLeft() bool
-	Right() Option[B]
+	IsRight() bool
 	Left() Option[A]
+	LeftPtr() Option[*A]
+	Right() Option[B]
+	RightPtr() Option[*B]
 	ToTuple() (A, B)
 	ToTuplePtr() (*A, *B)
 	UnwrapLeft() A

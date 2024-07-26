@@ -22,11 +22,27 @@ func (e *either[A, B]) Right() Option[B] {
 	}
 }
 
+func (e *either[A, B]) RightPtr() Option[*B] {
+	if e.IsRight() {
+		return Some(&e.right)
+	} else {
+		return None[*B]()
+	}
+}
+
 func (e *either[A, B]) Left() Option[A] {
 	if e.IsLeft() {
 		return Some(e.left)
 	} else {
 		return None[A]()
+	}
+}
+
+func (e *either[A, B]) LeftPtr() Option[*A] {
+	if e.IsLeft() {
+		return Some(&e.left)
+	} else {
+		return None[*A]()
 	}
 }
 
