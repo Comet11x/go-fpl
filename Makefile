@@ -11,7 +11,7 @@ GO_FPL_CORE_SRC    = ./examples/core/main.go
 GO_FPL_CORE_BIN    = $(TARGET_RELEASE)/$(GO_FPL_CORE_NAME)
 
 TEST_COVERAGE_DIR  = test_coverage
-TEST_COVERAGE_FILE = test_coverage
+TEST_COVERAGE_FILE = coverage_report
 CORE_TEST_COVERAGE = $(TEST_COVERAGE_DIR)/core/$(TEST_COVERAGE_FILE)
 
 
