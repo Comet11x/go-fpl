@@ -2,11 +2,12 @@
 
 A functional programming library for [Go](http://golang.org).
 
-[![Go][CI-CD-Image]][CI-CD-Url]
 [![License MIT][License-Image]][License-Url]
-[![GoDoc][GoDoc-Image]][GoDoc-Url]
+[![Go][CI-CD-Image]][CI-CD-Url]
 [![Go Report][Go-Report-Image]][Go-Report-Url]
 [![Coverage Status][Coverage-image]][Coverage-Url]
+[![GoDoc][GoDoc-Image]][GoDoc-Url]
+[![Sourcegraph][Sourcegraph-Image]]
 
 [CI-CD-Image]: https://github.com/Comet11x/go-fpl/actions/workflows/go.yml/badge.svg
 [CI-CD-Url]: https://github.com/Comet11x/go-fpl/actions/workflows/go.yml
@@ -18,6 +19,8 @@ A functional programming library for [Go](http://golang.org).
 [Coverage-image]: https://coveralls.io/repos/github/comet11x/go-fpl/badge.svg?branch=main
 [Go-Report-Url]: https://goreportcard.com/report/github.com/comet11x/go-fpl
 [Go-Report-Image]: https://goreportcard.com/badge/github.com/comet11x/go-fpl
+[Sourcegraph-Image]: https://sourcegraph.com/github.com/comet11x/go-fpl/-/badge.svg
+[Sourcegraph-Url]: https://sourcegraph.com/github.com/comet11x/go-fpl?badge
 
 
 ## Installation
