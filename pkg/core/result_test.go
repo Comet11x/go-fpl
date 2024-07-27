@@ -25,7 +25,7 @@ func TestUnwrapForOk(t *testing.T) {
 	s := "foo"
 	r := Ok[string](s)
 	if r.Ok().Unwrap() != s {
-		t.Fatalf("it must be equal %s", s)
+		t.Fatalf("it must be equal %s ", s)
 	}
 
 	if r.Error().Unwrap() != nil {
@@ -44,7 +44,7 @@ func TestUnwrapForError(t *testing.T) {
 	}
 }
 
-func TestUnwrapBar(t *testing.T) {
+func TestUnwrapOrForOk(t *testing.T) {
 	s := "foo"
 	r := Ok[string](s)
 
@@ -56,7 +56,7 @@ func TestUnwrapBar(t *testing.T) {
 	
 }
 
-func TestOkUnwrap(t *testing.T) {
+func TestUnwrapForOK(t *testing.T) {
 	s := "bar"
 	r := Ok[string](s)
 	if r.Ok().Unwrap() != s {
@@ -68,10 +68,44 @@ func TestOkUnwrap(t *testing.T) {
 	}
 }
 
-func TestErrorUnwrap(t *testing.T) {
+func TestUnwrapOrForError(t *testing.T) {
+	s := "foo"
 	r := Err[string](errors.New("error"))
-	if len(r.Ok().Unwrap()) != 0 {
-		t.Fatal("it must be equal 0")
+	v := r.UnwrapOr(s)
+	if v != s {
+		t.Fatalf("it must be equal %s", s)
+	}
+
+	if r.Error().Unwrap() == nil {
+		t.Fatal("it must be not equal nil")
+	}
+}
+
+
+func TestUnwrapOrPtrForOk(t *testing.T) {
+	s := "foo"
+	s2 := "bar"
+	r := Ok[string](s)
+
+	value := r.UnwrapOrPtr(&s2)
+
+	if *value == s2 {
+		t.Fatalf("it must be not equal %x", s2)
+	}
+
+	if *value != s {
+		t.Fatalf("it must be equal %x", s)
+	}
+
+}
+
+
+func TestUnwrapOrPtrForError(t *testing.T) {
+	s := "foo"
+	r := Err[string](errors.New("error"))
+	v := r.UnwrapOrPtr(&s)
+	if v != &s {
+		t.Fatalf("it must be equal %x", s)
 	}
 
 	if r.Error().Unwrap() == nil {
