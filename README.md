@@ -4,8 +4,8 @@ A functional programming library for [Go](http://golang.org).
 
 [![License MIT][License-Image]][License-Url]
 [![Go][CI-CD-Image]][CI-CD-Url]
-[![Go Report][Go-Report-Image]][Go-Report-Url]
 [![Coverage Status][Coverage-image]][Coverage-Url]
+[![Go Report][Go-Report-Image]][Go-Report-Url]
 [![GoDoc][GoDoc-Image]][GoDoc-Url]
 [![Sourcegraph][Sourcegraph-Image]][Sourcegraph-Tmp-Url]
 
