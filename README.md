@@ -3,7 +3,7 @@
 A functional programming library for [Go](http://golang.org).
 
 [![Go][CI-CD-Image]][CI-CD-Url]
-[![Coverage Status][Coverage-image]][Coverage-Url]
+[![Coverage Status][Coverage-Image]][Coverage-Url]
 [![License MIT][License-Image]][License-Url]
 [![Go Report][Go-Report-Image]][Go-Report-Url]
 [![GoDoc][GoDoc-Image]][GoDoc-Url]
@@ -17,7 +17,7 @@ A functional programming library for [Go](http://golang.org).
 [GoDoc-Image]: https://img.shields.io/badge/go.dev-reference-blue?logo=go&logoColor=white
 [Old-GoDoc-Image]: https://img.shields.io/badge/GoDoc-reference-007d9c
 [Coverage-Url]: https://coveralls.io/github/Comet11x/go-fpl?branch=main
-[Coverage-image]: https://coveralls.io/repos/github/Comet11x/go-fpl/badge.svg?branch=main
+[Coverage-Image]: https://coveralls.io/repos/github/Comet11x/go-fpl/badge.svg?branch=main
 [Go-Report-Url]: https://goreportcard.com/report/github.com/comet11x/go-fpl
 [Go-Report-Image]: https://goreportcard.com/badge/github.com/comet11x/go-fpl
 [Sourcegraph-Image]: https://sourcegraph.com/github.com/comet11x/go-fpl/-/badge.svg
