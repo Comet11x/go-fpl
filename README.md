@@ -2,9 +2,9 @@
 
 A functional programming library for [Go](http://golang.org).
 
-[![License MIT][License-Image]][License-Url]
 [![Go][CI-CD-Image]][CI-CD-Url]
 [![Coverage Status][Coverage-image]][Coverage-Url]
+[![License MIT][License-Image]][License-Url]
 [![Go Report][Go-Report-Image]][Go-Report-Url]
 [![GoDoc][GoDoc-Image]][GoDoc-Url]
 [![Sourcegraph][Sourcegraph-Image]][Sourcegraph-Tmp-Url]
