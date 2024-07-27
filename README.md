@@ -16,13 +16,14 @@ A functional programming library for [Go](http://golang.org).
 [GoDoc-Url]: https://pkg.go.dev/github.com/comet11x/go-fpl
 [GoDoc-Image]: https://img.shields.io/badge/go.dev-reference-blue?logo=go&logoColor=white
 [Old-GoDoc-Image]: https://img.shields.io/badge/GoDoc-reference-007d9c
-[Coverage-Url]: https://coveralls.io/github/comet11x/go-fpl
-[Coverage-image]: https://coveralls.io/repos/github/comet11x/go-fpl/badge.svg?branch=main
+[Coverage-Url]: https://coveralls.io/github/Comet11x/go-fpl?branch=main
+[Coverage-image]: https://coveralls.io/repos/github/Comet11x/go-fpl/badge.svg?branch=main
 [Go-Report-Url]: https://goreportcard.com/report/github.com/comet11x/go-fpl
 [Go-Report-Image]: https://goreportcard.com/badge/github.com/comet11x/go-fpl
 [Sourcegraph-Image]: https://sourcegraph.com/github.com/comet11x/go-fpl/-/badge.svg
 [Sourcegraph-Url]: https://sourcegraph.com/github.com/comet11x/go-fpl?badge
 [Sourcegraph-Tmp-Url]: https://github.com/Comet11x/go-fpl
+
 
 ## Installation
 
