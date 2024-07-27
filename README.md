@@ -7,7 +7,7 @@ A functional programming library for [Go](http://golang.org).
 [![Go Report][Go-Report-Image]][Go-Report-Url]
 [![Coverage Status][Coverage-image]][Coverage-Url]
 [![GoDoc][GoDoc-Image]][GoDoc-Url]
-[![Sourcegraph][Sourcegraph-Image]]
+[![Sourcegraph][Sourcegraph-Image]][Sourcegraph-Tmp-Url]
 
 [CI-CD-Image]: https://github.com/Comet11x/go-fpl/actions/workflows/go.yml/badge.svg
 [CI-CD-Url]: https://github.com/Comet11x/go-fpl/actions/workflows/go.yml
@@ -21,7 +21,7 @@ A functional programming library for [Go](http://golang.org).
 [Go-Report-Image]: https://goreportcard.com/badge/github.com/comet11x/go-fpl
 [Sourcegraph-Image]: https://sourcegraph.com/github.com/comet11x/go-fpl/-/badge.svg
 [Sourcegraph-Url]: https://sourcegraph.com/github.com/comet11x/go-fpl?badge
-
+[Sourcegraph-Tmp-Url]: https://github.com/Comet11x/go-fpl
 
 ## Installation
 
