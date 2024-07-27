@@ -20,7 +20,7 @@ A functional programming library for [Go](http://golang.org).
 [GoDoc-Image]: https://img.shields.io/badge/go.dev-reference-blue?logo=go&logoColor=white
 [Old-GoDoc-Image]: https://img.shields.io/badge/GoDoc-reference-007d9c
 [Coverage-Url]: https://coveralls.io/github/Comet11x/go-fpl?branch=main
-[Coverage-Image]: https://coveralls.io/repos/github/Comet11x/go-fpl/badge.png?branch=main
+[Coverage-Image]: https://coveralls.io/repos/github/Comet11x/go-fpl/badge.svg?branch=main&kill_cache=1
 [Go-Report-Url]: https://goreportcard.com/report/github.com/comet11x/go-fpl
 [Go-Report-Image]: https://goreportcard.com/badge/github.com/comet11x/go-fpl
 [Sourcegraph-Image]: https://sourcegraph.com/github.com/comet11x/go-fpl/-/badge.svg
