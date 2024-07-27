@@ -4,11 +4,14 @@ A functional programming library for [Go](http://golang.org).
 
 [![Go][CI-CD-Image]][CI-CD-Url]
 [![Coverage Status][Coverage-Image]][Coverage-Url]
+[![Go-Version][Go-Version-Image]][Go-Version-Url]
 [![License MIT][License-Image]][License-Url]
 [![Go Report][Go-Report-Image]][Go-Report-Url]
 [![GoDoc][GoDoc-Image]][GoDoc-Url]
 <!--[![Sourcegraph][Sourcegraph-Image]][Sourcegraph-Tmp-Url]-->
 
+[Go-Version-Image]: https://img.shields.io/badge/version-%3E=1.18-blue.svg?logo=go&logoColor=white
+[Go-Version-Url]: https://go.dev/doc/go1.18
 [CI-CD-Image]: https://github.com/Comet11x/go-fpl/actions/workflows/go.yml/badge.svg
 [CI-CD-Url]: https://github.com/Comet11x/go-fpl/actions/workflows/go.yml
 [License-Image]: https://img.shields.io/badge/License-MIT-blue.svg
