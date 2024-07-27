@@ -12,5 +12,5 @@ A functional programming library for [Go](http://golang.org).
 ## Installation
 
 ```shell
-go get github.com/comet11x/go-fpl/
+go get github.com/comet11x/go-fpl@latest
 ```
