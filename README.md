@@ -7,7 +7,7 @@ A functional programming library for [Go](http://golang.org).
 [![License MIT][License-Image]][License-Url]
 [![Go Report][Go-Report-Image]][Go-Report-Url]
 [![GoDoc][GoDoc-Image]][GoDoc-Url]
-[![Sourcegraph][Sourcegraph-Image]][Sourcegraph-Tmp-Url]
+<!--[![Sourcegraph][Sourcegraph-Image]][Sourcegraph-Tmp-Url]-->
 
 [CI-CD-Image]: https://github.com/Comet11x/go-fpl/actions/workflows/go.yml/badge.svg
 [CI-CD-Url]: https://github.com/Comet11x/go-fpl/actions/workflows/go.yml
