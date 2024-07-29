@@ -7,10 +7,9 @@ import (
 func TestCreateNone(t *testing.T) {
 	o := None[string]()
 	if o.IsSome() {
-		t.Fatal("it must be Noe[string]")
+		t.Fatal("it must be None[string]")
 	}
 }
-
 
 func TestCreateSomeForString(t *testing.T) {
 	o := Some("foo")
@@ -28,7 +27,7 @@ func TestCreateSomeOfString(t *testing.T) {
 
 func TestMapNoneForNone(t *testing.T) {
 	o1 := None[string]()
-	o2 := MapNone[string, int](o1, func ()  int {
+	o2 := MapNone[string, int](o1, func() int {
 		return 1
 	})
 
@@ -43,7 +42,7 @@ func TestMapNoneForNone(t *testing.T) {
 
 func TestMapNoneForSome(t *testing.T) {
 	o1 := Some[string]("foo")
-	o2 := MapNone[string, int](o1, func ()  int {
+	o2 := MapNone[string, int](o1, func() int {
 		return 1
 	})
 
@@ -52,11 +51,10 @@ func TestMapNoneForSome(t *testing.T) {
 	}
 }
 
-
 func TestMapSomeForSome(t *testing.T) {
 	s := "string"
 	o1 := Some[string](s)
-	o2 := MapSome[string, int](o1, func (s string)  int {
+	o2 := MapSome[string, int](o1, func(s string) int {
 		return len(s)
 	})
 
@@ -71,7 +69,7 @@ func TestMapSomeForSome(t *testing.T) {
 
 func TestMapSomeForNone(t *testing.T) {
 	o1 := None[string]()
-	o2 := MapSome[string, int](o1, func (s string)  int {
+	o2 := MapSome[string, int](o1, func(s string) int {
 		return len(s)
 	})
 
