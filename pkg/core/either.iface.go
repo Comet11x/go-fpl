@@ -4,9 +4,9 @@ type Either[A any, B any] interface {
 	IsLeft() bool
 	IsRight() bool
 	Left() Option[A]
-	LeftPtr() Option[*A]
+	LeftAsPtr() Option[*A]
 	Right() Option[B]
-	RightPtr() Option[*B]
+	RightAsPtr() Option[*B]
 	ToTuple() (A, B)
 	ToTuplePtr() (*A, *B)
 	UnwrapLeft() A
