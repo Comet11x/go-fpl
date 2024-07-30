@@ -10,7 +10,14 @@ type Either[A any, B any] interface {
 	ToTuple() (A, B)
 	ToTuplePtr() (*A, *B)
 	UnwrapLeft() A
-	UnwrapLeftPtr() *A
+	UnwrapLeftOr(A) A
+	UnwrapLeftOrFrom(func() A) A
+	UnwrapLeftAsPtr() *A
+	UnwrapLeftAsPtrOrFrom(func() *A) *A
+
 	UnwrapRight() B
-	UnwrapRightPtr() *B
+	UnwrapRightOr(B) B
+	UnwrapRightOrFrom(func() B) B
+	UnwrapRightAsPtr() *B
+	UnwrapRightAsPtrOrFrom(func() *B) *B
 }

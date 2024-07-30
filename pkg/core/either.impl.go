@@ -58,14 +58,62 @@ func (e *either[A, B]) UnwrapLeft() A {
 	return e.left
 }
 
-func (e *either[A, B]) UnwrapLeftPtr() *A {
+func (e *either[A, B]) UnwrapLeftOr(v A) A {
+	if e.IsLeft() {
+		return e.left
+	} else {
+		return v
+	}
+}
+
+func (e *either[A, B]) UnwrapLeftOrFrom(c func() A) A {
+	if e.IsLeft() {
+		return e.left
+	} else {
+		return c()
+	}
+}
+
+func (e *either[A, B]) UnwrapLeftAsPtr() *A {
 	return &e.left
+}
+
+func (e *either[A, B]) UnwrapLeftAsPtrOrFrom(c func() *A) *A {
+	if e.IsLeft() {
+		return &e.left
+	} else {
+		return c()
+	}
 }
 
 func (e *either[A, B]) UnwrapRight() B {
 	return e.right
 }
 
-func (e *either[A, B]) UnwrapRightPtr() *B {
+func (e *either[A, B]) UnwrapRightOr(v B) B {
+	if e.IsRight() {
+		return e.right
+	} else {
+		return v
+	}
+}
+
+func (e *either[A, B]) UnwrapRightOrFrom(c func() B) B {
+	if e.IsRight() {
+		return e.right
+	} else {
+		return c()
+	}
+}
+
+func (e *either[A, B]) UnwrapRightAsPtr() *B {
 	return &e.right
+}
+
+func (e *either[A, B]) UnwrapRightAsPtrOrFrom(c func() *B) *B {
+	if e.IsRight() {
+		return &e.right
+	} else {
+		return c()
+	}
 }
