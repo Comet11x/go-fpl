@@ -1,5 +1,13 @@
 package core
 
+func OptionFrom[T any](value any, ok bool) Option[T] {
+	if ok {
+		return Some(value.(T))
+	} else {
+		return None[T]()
+	}
+}
+
 func Some[T any](value T) Option[T] {
 	o := option[T]{t: _SOME, value: value}
 	return &o
