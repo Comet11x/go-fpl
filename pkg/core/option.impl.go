@@ -21,7 +21,7 @@ func (o *option[T]) UnwrapOr(value T) T {
 	}
 }
 
-func (o *option[T]) UnwrapOrPtr(value *T) *T {
+func (o *option[T]) UnwrapAsPtrOr(value *T) *T {
 	if o.IsNone() {
 		return value
 	} else {
