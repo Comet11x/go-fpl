@@ -5,7 +5,11 @@ type Result[T any] interface {
 	IsError() bool
 
 	UnwrapOr(value T) T
+
+	UnwrapOrFrom(c func() T) T
+
 	UnwrapAsPtrOr(value *T) *T
+	UnwrapAsPtrOrFrom(c func() *T) *T
 
 	Unwrap() T
 	UnwrapAsPtr() *T

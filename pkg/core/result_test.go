@@ -21,17 +21,14 @@ func TestCreateErrResult(t *testing.T) {
 	}
 }
 
-
-func TestUnwrapPtrForOk(t *testing.T) {
+func TestUnwrapAsPtrForOk(t *testing.T) {
 	i := 1
 	r := Ok[int](i)
-	o := r.UnwrapPtr()
+	o := r.UnwrapAsPtr()
 	if i != *o {
 		t.Fatalf("it must be equal %d", i)
 	}
 }
-
-
 
 func TestUnwrapForOk(t *testing.T) {
 	s := "foo"
@@ -65,7 +62,7 @@ func TestUnwrapOrForOk(t *testing.T) {
 	if value != s {
 		t.Fatalf("it must be equal %s", s)
 	}
-	
+
 }
 
 func TestUnwrapForOK(t *testing.T) {
@@ -93,13 +90,12 @@ func TestUnwrapOrForError(t *testing.T) {
 	}
 }
 
-
-func TestUnwrapOrPtrForOk(t *testing.T) {
+func TestUnwrapAsPtrOrForOk(t *testing.T) {
 	s := "foo"
 	s2 := "bar"
 	r := Ok[string](s)
 
-	value := r.UnwrapOrPtr(&s2)
+	value := r.UnwrapAsPtrOr(&s2)
 
 	if *value == s2 {
 		t.Fatalf("it must be not equal %x", s2)
@@ -111,11 +107,10 @@ func TestUnwrapOrPtrForOk(t *testing.T) {
 
 }
 
-
-func TestUnwrapOrPtrForError(t *testing.T) {
+func TestUnwrapAsPtrOrForError(t *testing.T) {
 	s := "foo"
 	r := Err[string](errors.New("error"))
-	v := r.UnwrapOrPtr(&s)
+	v := r.UnwrapAsPtrOr(&s)
 	if v != &s {
 		t.Fatalf("it must be equal %x", s)
 	}
@@ -125,11 +120,10 @@ func TestUnwrapOrPtrForError(t *testing.T) {
 	}
 }
 
-
 func TestOkPtrForOk(t *testing.T) {
 	v := 1
 	r := Ok[int](v)
-	
+
 	o := r.OkPtr()
 
 	if o.IsNone() || !o.IsSome() {
@@ -139,7 +133,7 @@ func TestOkPtrForOk(t *testing.T) {
 
 func TestOkPtrForErr(t *testing.T) {
 	r := Err[int](errors.New("error"))
-	
+
 	o := r.OkPtr()
 
 	if !o.IsNone() || o.IsSome() {
@@ -153,7 +147,7 @@ func TestToTupleForOk(t *testing.T) {
 
 	v2, err := r.ToTuple()
 
-	if v1 != v2  {
+	if v1 != v2 {
 		t.Fatal("it must be equal")
 	}
 
