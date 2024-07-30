@@ -22,7 +22,7 @@ func (r *result[T]) UnwrapOr(value T) T {
 	}
 }
 
-func (r *result[T]) UnwrapOrPtr(value *T) *T {
+func (r *result[T]) UnwrapAsPtrOr(value *T) *T {
 	if r.IsOk() {
 		return &r.ok
 	} else {

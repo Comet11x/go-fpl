@@ -5,7 +5,7 @@ type Result[T any] interface {
 	IsError() bool
 
 	UnwrapOr(value T) T
-	UnwrapOrPtr(value *T) *T
+	UnwrapAsPtrOr(value *T) *T
 
 	Unwrap() T
 	UnwrapPtr() *T
