@@ -21,9 +21,25 @@ func (o *option[T]) UnwrapOr(value T) T {
 	}
 }
 
+func (o *option[T]) UnwrapOrFrom(c func() T) T {
+	if o.IsNone() {
+		return c()
+	} else {
+		return o.value
+	}
+}
+
 func (o *option[T]) UnwrapAsPtrOr(value *T) *T {
 	if o.IsNone() {
 		return value
+	} else {
+		return &o.value
+	}
+}
+
+func (o *option[T]) UnwrapAsPtrOrFrom(c func() *T) *T {
+	if o.IsNone() {
+		return c()
 	} else {
 		return &o.value
 	}
@@ -43,8 +59,21 @@ func (o *option[T]) Swap(value T) T {
 	return prev
 }
 
-func (o *option[T]) SwapFromPtr(value *T) T {
+func (o *option[T]) SwapFrom(c func() T) T {
+	prev := o.value
+	o.value = c()
+	return prev
+}
+
+func (o *option[T]) SwapAsPtr(value *T) T {
 	prev := o.value
 	o.value = *value
+	return prev
+}
+
+func (o *option[T]) SwapAsPtrFrom(c func() *T) T {
+	prev := o.value
+	cur := c()
+	o.value = *cur
 	return prev
 }
