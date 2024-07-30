@@ -6,7 +6,7 @@ type Option[T any] interface {
 	UnwrapOr(value T) T
 	UnwrapAsPtrOr(value *T) *T
 	Unwrap() T
-	UnwrapPtr() *T
+	UnwrapAsPtr() *T
 	Swap(value T) T
 	SwapFromPtr(value *T) T
 }

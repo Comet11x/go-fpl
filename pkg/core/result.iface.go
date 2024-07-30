@@ -8,7 +8,7 @@ type Result[T any] interface {
 	UnwrapAsPtrOr(value *T) *T
 
 	Unwrap() T
-	UnwrapPtr() *T
+	UnwrapAsPtr() *T
 
 	ToTuple() (T, error)
 	ToTuplePtr() (*T, error)

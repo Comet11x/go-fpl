@@ -33,7 +33,7 @@ func (o *option[T]) Unwrap() T {
 	return o.value
 }
 
-func (o *option[T]) UnwrapPtr() *T {
+func (o *option[T]) UnwrapAsPtr() *T {
 	return &o.value
 }
 

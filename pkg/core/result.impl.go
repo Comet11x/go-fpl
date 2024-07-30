@@ -34,7 +34,7 @@ func (r *result[T]) Unwrap() T {
 	return r.ok
 }
 
-func (r *result[T]) UnwrapPtr() *T {
+func (r *result[T]) UnwrapAsPtr() *T {
 	return &r.ok
 }
 
