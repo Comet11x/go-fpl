@@ -49,4 +49,7 @@ type Result[T any] interface {
 	OkPtr() Option[*T]
 
 	Error() Option[error]
+
+	MapIfOk(fn func(v T) T) Result[T]
+	MapIfErr(fn func(e error) T) Result[T]
 }

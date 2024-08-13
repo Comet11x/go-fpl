@@ -130,3 +130,19 @@ func (r *result[T]) Error() Option[error] {
 		return None[error]()
 	}
 }
+
+func (r *result[T]) MapIfOk(fn func(v T) T) Result[T] {
+	if r.IsOk() {
+		return Ok(fn(r.ok))
+	} else {
+		return r
+	}
+}
+
+func (r *result[T]) MapIfErr(fn func(e error) T) Result[T] {
+	if r.IsError() {
+		return Ok(fn(r.err))
+	} else {
+		return r
+	}
+}
