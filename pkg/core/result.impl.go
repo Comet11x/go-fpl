@@ -22,7 +22,7 @@ func (r *result[T]) UnwrapOr(value T) T {
 	}
 }
 
-func (r *result[T]) UnwrapOrFrom(c func() T) T {
+func (r *result[T]) UnwrapOrValueFrom(c func() T) T {
 	if r.IsOk() {
 		return r.ok
 	} else {
@@ -38,7 +38,7 @@ func (r *result[T]) UnwrapAsPtrOr(value *T) *T {
 	}
 }
 
-func (r *result[T]) UnwrapAsPtrOrFrom(c func() *T) *T {
+func (r *result[T]) UnwrapAsPtrOrPtrFrom(c func() *T) *T {
 	if r.IsOk() {
 		return &r.ok
 	} else {
@@ -69,6 +69,14 @@ func (r *result[T]) UnwrapErr() error {
 		panic("called `Result.UnwrapErr()` on an `Ok` value")
 	}
 	return r.err
+}
+
+func (r *result[T]) UnwrapErrOr(err error) error {
+	if r.IsError() {
+		return r.err
+	} else {
+		return err
+	}
 }
 
 func (r *result[T]) ToTuple() (T, error) {
