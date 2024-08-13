@@ -77,3 +77,11 @@ func (o *option[T]) SwapAsPtrFrom(c func() *T) T {
 	o.value = *cur
 	return prev
 }
+
+func (o *option[T]) ToTuple() (T, bool) {
+	return o.value, o.IsSome()
+}
+
+func (o *option[T]) ToTupleAsPtr() (*T, bool) {
+	return &o.value, o.IsSome()
+}

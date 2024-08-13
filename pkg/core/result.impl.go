@@ -46,19 +46,36 @@ func (r *result[T]) UnwrapAsPtrOrFrom(c func() *T) *T {
 	}
 }
 
+func (r *result[T]) UnwrapOrDefault() T {
+	return r.ok
+}
+
 func (r *result[T]) Unwrap() T {
+	if r.IsError() {
+		panic("called `Result.Unwrap()` on an `Err` value")
+	}
 	return r.ok
 }
 
 func (r *result[T]) UnwrapAsPtr() *T {
+	if r.IsError() {
+		panic("called `Result.UnwrapAsPtr()` on an `Err` value")
+	}
 	return &r.ok
+}
+
+func (r *result[T]) UnwrapErr() error {
+	if r.IsOk() {
+		panic("called `Result.UnwrapErr()` on an `Ok` value")
+	}
+	return r.err
 }
 
 func (r *result[T]) ToTuple() (T, error) {
 	return r.ok, r.err
 }
 
-func (r *result[T]) ToTuplePtr() (*T, error) {
+func (r *result[T]) ToTupleAsPtr() (*T, error) {
 	return &r.ok, r.err
 }
 

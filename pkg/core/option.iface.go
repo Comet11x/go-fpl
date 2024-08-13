@@ -9,6 +9,8 @@ type Option[T any] interface {
 	UnwrapAsPtrOrFrom(func() *T) *T
 	Unwrap() T
 	UnwrapAsPtr() *T
+	ToTuple() (T, bool)
+	ToTupleAsPtr() (*T, bool)
 	Swap(value T) T
 	SwapFrom(func() T) T
 	SwapAsPtr(value *T) T
