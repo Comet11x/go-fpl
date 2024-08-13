@@ -21,7 +21,7 @@ func (o *option[T]) UnwrapOr(value T) T {
 	}
 }
 
-func (o *option[T]) UnwrapOrFrom(c func() T) T {
+func (o *option[T]) UnwrapOrValueFrom(c func() T) T {
 	if o.IsNone() {
 		return c()
 	} else {
@@ -37,7 +37,7 @@ func (o *option[T]) UnwrapAsPtrOr(value *T) *T {
 	}
 }
 
-func (o *option[T]) UnwrapAsPtrOrFrom(c func() *T) *T {
+func (o *option[T]) UnwrapAsPtrOrPtrFrom(c func() *T) *T {
 	if o.IsNone() {
 		return c()
 	} else {

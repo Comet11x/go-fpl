@@ -15,13 +15,13 @@ type Result[T any] interface {
 	UnwrapOrDefault() T
 
 	// Returns a value of the result or a value from the function
-	UnwrapOrFrom(c func() T) T
+	UnwrapOrValueFrom(c func() T) T
 
 	// Returns a pointer of a value of the result or an alternative pointer
 	UnwrapAsPtrOr(value *T) *T
 
 	// Returns a pointer of a value of the result or a pointer from the function
-	UnwrapAsPtrOrFrom(c func() *T) *T
+	UnwrapAsPtrOrPtrFrom(c func() *T) *T
 
 	// Returns the contained Ok[T] value.
 	Unwrap() T

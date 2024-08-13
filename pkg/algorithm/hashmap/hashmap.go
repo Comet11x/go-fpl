@@ -8,7 +8,7 @@ import (
 )
 
 func Get[K comparable, T any](m map[K]T, k K, mtx ...sync.RWLocker) core.Option[T] {
-	l := slice.Head(mtx).UnwrapOrFrom(sync.FakeRWLocker)
+	l := slice.Head(mtx).UnwrapOrValueFrom(sync.FakeRWLocker)
 	l.Lock()
 	v, ok := m[k]
 	l.Unlock()
@@ -16,7 +16,7 @@ func Get[K comparable, T any](m map[K]T, k K, mtx ...sync.RWLocker) core.Option[
 }
 
 func Set[K comparable, T any](m map[K]T, k K, v T, mtx ...sync.RWLocker) {
-	l := slice.Head(mtx).UnwrapOrFrom(sync.FakeRWLocker)
+	l := slice.Head(mtx).UnwrapOrValueFrom(sync.FakeRWLocker)
 	l.Lock()
 	m[k] = v
 	l.Unlock()
@@ -24,7 +24,7 @@ func Set[K comparable, T any](m map[K]T, k K, v T, mtx ...sync.RWLocker) {
 
 func Keys[K comparable, T any](m map[K]T, mtx ...sync.RWLocker) []K {
 	var out []K
-	l := slice.Head(mtx).UnwrapOrFrom(sync.FakeRWLocker)
+	l := slice.Head(mtx).UnwrapOrValueFrom(sync.FakeRWLocker)
 	l.RLock()
 	out = make([]K, 0, len(m))
 	for k := range m {
@@ -36,7 +36,7 @@ func Keys[K comparable, T any](m map[K]T, mtx ...sync.RWLocker) []K {
 
 func Values[K comparable, T any](m map[K]T, mtx ...sync.RWLocker) []T {
 	var out []T
-	l := slice.Head(mtx).UnwrapOrFrom(sync.FakeRWLocker)
+	l := slice.Head(mtx).UnwrapOrValueFrom(sync.FakeRWLocker)
 
 	l.RLock()
 	out = make([]T, 0, len(m))
@@ -50,7 +50,7 @@ func Values[K comparable, T any](m map[K]T, mtx ...sync.RWLocker) []T {
 
 func Zip[K comparable, T any](keys []K, values []T, mtx ...sync.RWLocker) map[K]T {
 	var out map[K]T
-	l := slice.Head(mtx).UnwrapOrFrom(sync.FakeRWLocker)
+	l := slice.Head(mtx).UnwrapOrValueFrom(sync.FakeRWLocker)
 
 	l.RLock()
 	m := algorithm.Min(len(keys), len(values))

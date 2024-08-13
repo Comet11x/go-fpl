@@ -4,9 +4,9 @@ type Option[T any] interface {
 	IsSome() bool
 	IsNone() bool
 	UnwrapOr(value T) T
-	UnwrapOrFrom(func() T) T
+	UnwrapOrValueFrom(func() T) T
 	UnwrapAsPtrOr(value *T) *T
-	UnwrapAsPtrOrFrom(func() *T) *T
+	UnwrapAsPtrOrPtrFrom(func() *T) *T
 	Unwrap() T
 	UnwrapAsPtr() *T
 	ToTuple() (T, bool)

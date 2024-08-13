@@ -95,7 +95,7 @@ func Count[T any](iterable []T, clb func(T) bool) uint {
 
 func Zip[T any](f []T, s []T, mtx ...sync.RWLocker) [][]T {
 	var out [][]T
-	l := Head(mtx).UnwrapOrFrom(sync.FakeRWLocker)
+	l := Head(mtx).UnwrapOrValueFrom(sync.FakeRWLocker)
 
 	l.RLock()
 	m := algorithm.Min(len(f), len(s))
