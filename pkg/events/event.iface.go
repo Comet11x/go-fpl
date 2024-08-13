@@ -11,15 +11,6 @@ type Event interface {
 	// Returns an event name
 	Name() string
 
-	// Return true if the event is cancelable
-	IsCancelable() bool
-
-	// Returns true if an event was canceled
-	IsCanceled() bool
-
-	// Cancels the event if it is cancelable
-	Cancel()
-
 	// Returns data about a publisher (optional)
 	From() core.Option[any]
 
