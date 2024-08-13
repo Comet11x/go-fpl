@@ -2,11 +2,9 @@ package events
 
 import (
 	"testing"
-	"time"
 )
 
 func TestCreateEventWithPayload(t *testing.T) {
-	t.Fatal("{} ", time.Now().UnixNano(), time.Now().UnixNano(), time.Now().UnixNano())
 	e := CreateEventWithPayload("foo", []int{1, 3, 5}, "TEST")
 
 	if e.Name() != "foo" {
