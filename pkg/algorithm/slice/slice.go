@@ -1,7 +1,9 @@
 package slice
 
 import (
+	"github.com/comet11x/go-fpl/pkg/algorithm"
 	"github.com/comet11x/go-fpl/pkg/core"
+	"github.com/comet11x/go-fpl/pkg/sync"
 )
 
 func Head[S ~[]T, T any](s S) core.Option[T] {
@@ -89,4 +91,19 @@ func Count[T any](iterable []T, clb func(T) bool) uint {
 	}
 
 	return c
+}
+
+func Zip[T any](f []T, s []T, mtx ...sync.RWLocker) [][]T {
+	var out [][]T
+	l := Head(mtx).UnwrapOrFrom(sync.FakeRWLocker)
+
+	l.RLock()
+	m := algorithm.Min(len(f), len(s))
+	out = make([][]T, 0, m)
+	for i := 0; i < m; i++ {
+		out = append(out, []T{f[i], s[i]})
+	}
+	l.RUnlock()
+
+	return out
 }
