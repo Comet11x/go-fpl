@@ -32,6 +32,9 @@ type Result[T any] interface {
 	// Returns an error of the result or an alternative error
 	UnwrapErrOr(error) error
 
+	//
+	UnwrapErrOrDefault() error
+
 	// Returns the contained Ok[T] value as a pointer
 	UnwrapAsPtr() *T
 

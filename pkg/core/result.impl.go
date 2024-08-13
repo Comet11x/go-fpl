@@ -79,6 +79,10 @@ func (r *result[T]) UnwrapErrOr(err error) error {
 	}
 }
 
+func (r *result[T]) UnwrapErrOrDefault() error {
+	return r.err
+}
+
 func (r *result[T]) ToTuple() (T, error) {
 	return r.ok, r.err
 }
