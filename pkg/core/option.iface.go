@@ -15,4 +15,6 @@ type Option[T any] interface {
 	SwapFrom(func() T) T
 	SwapAsPtr(value *T) T
 	SwapAsPtrFrom(func() *T) T
+	MapIfSome(fn func(v T) T) Option[T]
+	MapIfNone(fn func() T) Option[T]
 }
