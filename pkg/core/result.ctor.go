@@ -26,9 +26,25 @@ func MapOk[T any, U any](r Result[T], fn func(v T) U) Result[U] {
 	}
 }
 
+func MapOkFrom[T any, U any](r Result[T], fn func(v T) Result[U]) Result[U] {
+	if r.IsOk() {
+		return fn(r.Ok().Unwrap())
+	} else {
+		return Err[U](r.Error().Unwrap())
+	}
+}
+
 func MapError[T any, U any](r Result[T], fn func(err error) U) Either[T, U] {
 	if r.IsError() {
 		return Right[T, U](fn(r.Error().Unwrap()))
+	} else {
+		return Left[T, U](r.Ok().Unwrap())
+	}
+}
+
+func MapErrorFrom[T any, U any](r Result[T], fn func(err error) Either[T, U]) Either[T, U] {
+	if r.IsError() {
+		return fn(r.Error().Unwrap())
 	} else {
 		return Left[T, U](r.Ok().Unwrap())
 	}

@@ -26,9 +26,25 @@ func MapSome[T any, U any](o Option[T], fn func(v T) U) Option[U] {
 	}
 }
 
+func MapSomeFrom[T any, U any](o Option[T], fn func(v T) Option[U]) Option[U] {
+	if o.IsNone() {
+		return None[U]()
+	} else {
+		return fn(o.Unwrap())
+	}
+}
+
 func MapNone[T any, U any](o Option[T], fn func() U) Option[U] {
 	if o.IsNone() {
 		return Some[U](fn())
+	} else {
+		return None[U]()
+	}
+}
+
+func MapNoneFrom[T any, U any](o Option[T], fn func() Option[U]) Option[U] {
+	if o.IsNone() {
+		return fn()
 	} else {
 		return None[U]()
 	}
