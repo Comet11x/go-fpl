@@ -6,7 +6,6 @@ import (
 
 type EventEmitter interface {
 	types.Closable
-	types.Awaiter[types.Void]
 	AddEventEventListener(eventName string, l EventListener) EventEmitter
 	On(eventName string, l EventListener) EventEmitter
 	Once(eventName string, l EventListener) EventEmitter

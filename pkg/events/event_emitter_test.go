@@ -22,5 +22,5 @@ func TestCreateEE(t *testing.T) {
 	}))
 
 	go emit(ee)
-	ee.Await()
+	Awaiter(ee).Unwrap().Await()
 }
