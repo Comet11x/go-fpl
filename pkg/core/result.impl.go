@@ -131,7 +131,7 @@ func (r *result[T]) Error() Option[error] {
 	}
 }
 
-func (r *result[T]) MapIfOk(fn func(v T) T) Result[T] {
+func (r *result[T]) MapOk(fn func(v T) T) Result[T] {
 	if r.IsOk() {
 		return Ok(fn(r.ok))
 	} else {
@@ -139,10 +139,58 @@ func (r *result[T]) MapIfOk(fn func(v T) T) Result[T] {
 	}
 }
 
-func (r *result[T]) MapIfErr(fn func(e error) T) Result[T] {
+func (r *result[T]) MapOkFrom(fn func(v T) Result[T]) Result[T] {
+	if r.IsOk() {
+		return fn(r.ok)
+	} else {
+		return r
+	}
+}
+
+func (r *result[T]) MapOkAsOption(fn func(v T) T) Option[T] {
+	if r.IsOk() {
+		return Some(fn(r.ok))
+	} else {
+		return None[T]()
+	}
+}
+
+func (r *result[T]) MapOkAsOptionFrom(fn func(v T) Option[T]) Option[T] {
+	if r.IsOk() {
+		return fn(r.ok)
+	} else {
+		return None[T]()
+	}
+}
+
+func (r *result[T]) MapErr(fn func(e error) T) Result[T] {
 	if r.IsError() {
 		return Ok(fn(r.err))
 	} else {
 		return r
+	}
+}
+
+func (r *result[T]) MapErrFrom(fn func(e error) Result[T]) Result[T] {
+	if r.IsError() {
+		return fn(r.err)
+	} else {
+		return r
+	}
+}
+
+func (r *result[T]) MapErrAs(fn func(e error) T) Option[T] {
+	if r.IsError() {
+		return Some(fn(r.err))
+	} else {
+		return None[T]()
+	}
+}
+
+func (r *result[T]) MapErrAsFrom(fn func(e error) Option[T]) Option[T] {
+	if r.IsError() {
+		return fn(r.err)
+	} else {
+		return None[T]()
 	}
 }

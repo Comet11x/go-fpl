@@ -13,7 +13,7 @@ func (o *option[T]) IsNone() bool {
 	return o.t == _NONE
 }
 
-func (o *option[T]) MapIfSome(fn func(v T) T) Option[T] {
+func (o *option[T]) MapSome(fn func(v T) T) Option[T] {
 	if o.IsSome() {
 		return Some(fn(o.value))
 	} else {
@@ -21,9 +21,25 @@ func (o *option[T]) MapIfSome(fn func(v T) T) Option[T] {
 	}
 }
 
-func (o *option[T]) MapIfNone(fn func() T) Option[T] {
+func (o *option[T]) MapSomeFrom(fn func(v T) Option[T]) Option[T] {
+	if o.IsSome() {
+		return fn(o.value)
+	} else {
+		return o
+	}
+}
+
+func (o *option[T]) MapNone(fn func() T) Option[T] {
 	if o.IsNone() {
 		return Some(fn())
+	} else {
+		return o
+	}
+}
+
+func (o *option[T]) MapNoneFrom(fn func() Option[T]) Option[T] {
+	if o.IsNone() {
+		return fn()
 	} else {
 		return o
 	}

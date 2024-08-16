@@ -50,6 +50,15 @@ type Result[T any] interface {
 
 	Error() Option[error]
 
-	MapIfOk(fn func(v T) T) Result[T]
-	MapIfErr(fn func(e error) T) Result[T]
+	MapOk(fn func(v T) T) Result[T]
+	MapOkFrom(fn func(v T) Result[T]) Result[T]
+
+	MapOkAsOption(fn func(v T) T) Option[T]
+	MapOkAsOptionFrom(fn func(v T) Option[T]) Option[T]
+
+	MapErr(fn func(e error) T) Result[T]
+	MapErrFrom(fn func(e error) Result[T]) Result[T]
+
+	MapErrAs(fn func(e error) T) Option[T]
+	MapErrAsFrom(fn func(e error) Option[T]) Option[T]
 }
