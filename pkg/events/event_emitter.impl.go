@@ -134,7 +134,7 @@ func (ee *eventEmitter) AsyncEmit(e Event) EventEmitter {
 	return ee
 }
 
-func (ee *eventEmitter) Events(eventName string) []string {
+func (ee *eventEmitter) Events() []string {
 	ee.mu.RLock()
 	out := make([]string, len(ee.storage))
 	for k := range ee.storage {

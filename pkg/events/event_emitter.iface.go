@@ -14,7 +14,7 @@ type EventEmitter interface {
 	RemoveAllEventListeners(eventName string) bool
 	Emit(e Event) EventEmitter
 	AsyncEmit(e Event) EventEmitter
-	Events(eventName string) []string
+	Events() []string
 	ListenerCount(eventName string) int
 	ToListener() EventListener
 }
