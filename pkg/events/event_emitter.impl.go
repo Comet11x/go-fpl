@@ -20,9 +20,8 @@ func (ee *eventEmitter) Close() {
 	ee.closer <- struct{}{}
 }
 
-func (ee *eventEmitter) AddEventEventListener(eventName string, l EventListener) EventEmitter {
+func (ee *eventEmitter) AddEventEventListener(eventName string, l EventListener) {
 	ee.On(eventName, l)
-	return ee
 }
 
 func (ee *eventEmitter) poll() {
@@ -50,7 +49,7 @@ func (ee *eventEmitter) poll() {
 	}
 }
 
-func (ee *eventEmitter) On(eventName string, l EventListener) EventEmitter {
+func (ee *eventEmitter) On(eventName string, l EventListener) {
 	ee.mu.RLock()
 	lc, ok := ee.storage[eventName]
 	ee.mu.RUnlock()
@@ -63,10 +62,9 @@ func (ee *eventEmitter) On(eventName string, l EventListener) EventEmitter {
 	}
 	lc.AddPersistentEventListener(l)
 	ee.empty.Store(false)
-	return ee
 }
 
-func (ee *eventEmitter) Once(eventName string, l EventListener) EventEmitter {
+func (ee *eventEmitter) Once(eventName string, l EventListener) {
 	ee.mu.RLock()
 	lc, ok := ee.storage[eventName]
 	ee.mu.RUnlock()
@@ -79,7 +77,6 @@ func (ee *eventEmitter) Once(eventName string, l EventListener) EventEmitter {
 	}
 	lc.AddTemporaryEventListener(l)
 	ee.empty.Store(false)
-	return ee
 }
 
 func (ee *eventEmitter) Off(eventName string, l EventListener) bool {
@@ -110,28 +107,26 @@ func (ee *eventEmitter) RemoveAllEventListeners(eventName string) bool {
 	return ok
 }
 
-func (ee *eventEmitter) Emit(e Event) EventEmitter {
+func (ee *eventEmitter) Emit(e Event) {
 	ee.mu.RLock()
 	lc, ok := ee.storage[e.Name()]
 	ee.mu.RUnlock()
 	if ok {
 		lc.Send(e, CreateSyncModeEventPropagation())
 	}
-	return ee
 }
 
 func (ee *eventEmitter) listen(e Event) {
 	ee.Emit(e)
 }
 
-func (ee *eventEmitter) AsyncEmit(e Event) EventEmitter {
+func (ee *eventEmitter) AsyncEmit(e Event) {
 	ee.mu.RLock()
 	lc, ok := ee.storage[e.Name()]
 	ee.mu.Unlock()
 	if ok {
 		lc.Send(e, CreateAsyncModeEventPropagation())
 	}
-	return ee
 }
 
 func (ee *eventEmitter) Events() []string {
