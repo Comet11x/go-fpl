@@ -107,13 +107,17 @@ func (ee *eventEmitter) RemoveAllEventListeners(eventName string) bool {
 	return ok
 }
 
-func (ee *eventEmitter) Emit(e Event) {
+func (ee *eventEmitter) emit(e Event, mode ModeEventPropagation) {
 	ee.mu.RLock()
 	lc, ok := ee.storage[e.Name()]
-	ee.mu.RUnlock()
+	ee.mu.Unlock()
 	if ok {
-		lc.Send(e, CreateSyncModeEventPropagation())
+		lc.Send(e, mode)
 	}
+}
+
+func (ee *eventEmitter) Emit(e Event) {
+	ee.emit(e, CreateSyncModeEventPropagation())
 }
 
 func (ee *eventEmitter) listen(e Event) {
@@ -121,12 +125,7 @@ func (ee *eventEmitter) listen(e Event) {
 }
 
 func (ee *eventEmitter) AsyncEmit(e Event) {
-	ee.mu.RLock()
-	lc, ok := ee.storage[e.Name()]
-	ee.mu.Unlock()
-	if ok {
-		lc.Send(e, CreateAsyncModeEventPropagation())
-	}
+	go ee.emit(e, CreateAsyncModeEventPropagation())
 }
 
 func (ee *eventEmitter) Events() []string {
