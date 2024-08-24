@@ -1,10 +1,29 @@
 package core
 
+import (
+	"errors"
+	"fmt"
+)
+
 func ResultFrom[T any](value T, err error) Result[T] {
 	if err != nil {
 		return Err[T](err)
 	} else {
 		return Ok(value)
+	}
+}
+
+func ResultFromEither[T any](either Either[T, any], errorFactory ...func(any) error) Result[T] {
+	if either.IsLeft() {
+		return Ok(either.UnwrapLeft())
+	} else {
+		var err error
+		if len(errorFactory) != 0 {
+			err = errorFactory[0](either.UnwrapRight())
+		} else {
+			err = errors.New(fmt.Sprint(either.UnwrapRight()))
+		}
+		return Err[T](err)
 	}
 }
 
