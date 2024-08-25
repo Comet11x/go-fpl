@@ -30,8 +30,8 @@ func Tail[S ~[]T, T any](s S) S {
 	}
 }
 
-func Map[S ~[]T, T any, R ~[]U, U any](iterable S, clb func(T) U) R {
-	out := make(R, len(iterable))
+func Map[T any, U any](iterable []T, clb func(T) U) []U {
+	out := make([]U, len(iterable))
 	for i, v := range iterable {
 		out[i] = clb(v)
 	}
