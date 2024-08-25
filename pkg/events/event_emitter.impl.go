@@ -110,7 +110,7 @@ func (ee *eventEmitter) RemoveAllEventListeners(eventName string) bool {
 func (ee *eventEmitter) emit(e Event, mode ModeEventPropagation) {
 	ee.mu.RLock()
 	lc, ok := ee.storage[e.Name()]
-	ee.mu.Unlock()
+	ee.mu.RUnlock()
 	if ok {
 		lc.Send(e, mode)
 	}
