@@ -2,7 +2,9 @@ package events
 
 import (
 	"sync/atomic"
+	"time"
 
+	"github.com/comet11x/go-fpl/pkg/async"
 	"github.com/comet11x/go-fpl/pkg/core"
 	"github.com/comet11x/go-fpl/pkg/sync"
 	"github.com/comet11x/go-fpl/pkg/types"
@@ -118,6 +120,17 @@ func (ee *eventEmitter) emit(e Event, mode ModeEventPropagation) {
 
 func (ee *eventEmitter) Emit(e Event) {
 	ee.emit(e, CreateSyncModeEventPropagation())
+}
+
+func (ee *eventEmitter) Defer(e Event, timeout time.Duration) (cancel func()) {
+	dc := async.Defer(func(e Event) interface{} {
+		ee.AsyncEmit(e)
+		return nil
+	}, e, timeout)
+
+	return func() {
+		dc.Cancel()
+	}
 }
 
 func (ee *eventEmitter) listen(e Event) {
