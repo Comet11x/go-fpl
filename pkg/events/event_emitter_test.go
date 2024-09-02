@@ -6,7 +6,7 @@ import (
 )
 
 func emit(ee EventEmitter) {
-	ee.Emit(CreateEventWithoutPayload("TEST"))
+	ee.AsyncEmit(CreateEventWithoutPayload("TEST"))
 }
 
 func eventHandle(e Event) {
