@@ -1,9 +1,21 @@
 package async
 
-import "github.com/comet11x/go-fpl/pkg/core"
+import (
+	"sync"
+
+	"github.com/comet11x/go-fpl/pkg/core"
+)
 
 func Async[T any](fn func(resolve func(T), reject func(any))) Promise[T] {
-	p := promise[T]{}
+	m := &sync.Mutex{}
+	p := promise[T]{
+		thenHandler:    make([]Resolve[T], 0),
+		catchHandler:   make([]func(any), 0),
+		finallyHandler: make([]func(), 0),
+		resultMutex:    m,
+		cond:           sync.NewCond(m),
+	}
+	p.status.Store(PENDING)
 	go p.run(fn)
 	return &p
 }

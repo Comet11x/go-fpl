@@ -9,8 +9,8 @@ import (
 
 type promise[T any] struct {
 	status          atomic.Uint32
-	cond            sync.Cond
-	resultMutex     sync.Mutex
+	cond            *sync.Cond
+	resultMutex     *sync.Mutex
 	successfulValue core.Option[T]
 	failedValue     core.Option[any]
 	handlerMutex    sync.RWMutex
@@ -56,8 +56,12 @@ func (p *promise[T]) reject(e any) {
 	for _, handler := range p.catchHandler {
 		go handler(e)
 	}
+	for _, handler := range p.finallyHandler {
+		go handler()
+	}
 	p.thenHandler = nil
 	p.catchHandler = nil
+	p.finallyHandler = nil
 	p.handlerMutex.Unlock()
 }
 
