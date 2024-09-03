@@ -15,7 +15,7 @@ type promise[T any] struct {
 	failedValue     core.Option[any]
 	handlerMutex    sync.RWMutex
 	thenHandler     []Resolve[T]
-	catchHandler    []func(any)
+	catchHandler    []Reject
 	finallyHandler  []func()
 }
 
@@ -66,7 +66,9 @@ func (p *promise[T]) reject(e any) {
 }
 
 // ----------------------------------------------------------------
-//  PUBLIC methods
+//
+//	PUBLIC methods
+//
 // ----------------------------------------------------------------
 func (p *promise[T]) Then(fn func(T)) Promise[T] {
 	p.handlerMutex.RLock()
