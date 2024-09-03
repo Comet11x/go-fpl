@@ -20,7 +20,7 @@ type promise[T any] struct {
 }
 
 func (p *promise[T]) run(executor func(func(T), func(any))) {
-	t := core.Call[any, any](func(_ any) any {
+	t := core.ImmediateCall[any, any](func(_ any) any {
 		executor(p.resolve, p.reject)
 		return nil
 	}, nil,
@@ -36,10 +36,10 @@ func (p *promise[T]) resolve(v T) {
 	p.successfulValue = core.Some(v)
 	p.failedValue = core.None[any]()
 	for _, handler := range p.thenHandler {
-		go handler(v)
+		handler(v)
 	}
 	for _, handler := range p.finallyHandler {
-		go handler()
+		handler()
 	}
 	p.thenHandler = nil
 	p.catchHandler = nil
@@ -68,7 +68,6 @@ func (p *promise[T]) reject(e any) {
 // ----------------------------------------------------------------
 //  PUBLIC methods
 // ----------------------------------------------------------------
-
 func (p *promise[T]) Then(fn func(T)) Promise[T] {
 	p.handlerMutex.RLock()
 	isDone := p.thenHandler == nil
