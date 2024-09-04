@@ -26,5 +26,5 @@ type Promise[T any] interface {
 	Status() string
 
 	// Returns an item of Future[T]
-	// Future() Future[T]
+	Future() Future[T]
 }

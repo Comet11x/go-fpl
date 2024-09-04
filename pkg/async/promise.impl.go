@@ -138,3 +138,7 @@ func (p *promise[T]) Status() string {
 		return "pending"
 	}
 }
+
+func (p *promise[T]) Future() Future[T] {
+	return &future[T]{}
+}
