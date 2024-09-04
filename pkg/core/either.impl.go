@@ -14,6 +14,22 @@ func (e *either[A, B]) IsLeft() bool {
 	return e.t == _LEFT
 }
 
+func (e *either[A, B]) IfLeft(fn func(A)) bool {
+	cond := e.IsLeft()
+	if cond {
+		fn(e.left)
+	}
+	return cond
+}
+
+func (e *either[A, B]) IfRight(fn func(B)) bool {
+	cond := e.IsRight()
+	if cond {
+		fn(e.right)
+	}
+	return cond
+}
+
 func (e *either[A, B]) Right() Option[B] {
 	if e.IsRight() {
 		return Some(e.right)

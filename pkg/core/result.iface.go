@@ -8,6 +8,12 @@ type Result[T any] interface {
 	// Returns false if the item of Result is Err[T]
 	IsError() bool
 
+	// Calls a callback if the result is Ok
+	IfOk(func(T)) bool
+
+	// Calls a callback if the result is Error
+	IfError(func(error)) bool
+
 	// Returns a value of the result or an alternative value
 	UnwrapOr(value T) T
 
