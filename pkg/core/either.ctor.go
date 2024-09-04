@@ -10,48 +10,48 @@ func EitherFromResult[T any](r Result[T]) Either[T, error] {
 	return &e
 }
 
-func Left[A any, B any](value A) Either[A, B] {
-	e := either[A, B]{t: _LEFT, left: value}
+func Left[L any, R any](value L) Either[L, R] {
+	e := either[L, R]{t: _LEFT, left: value}
 	return &e
 }
 
-func Right[A any, B any](value B) Either[A, B] {
-	e := either[A, B]{t: _RIGHT, right: value}
+func Right[L any, R any](value R) Either[L, R] {
+	e := either[L, R]{t: _RIGHT, right: value}
 	return &e
 }
 
-func MapRight[A any, B any, R any](e Either[A, B], fn func(value B) R) Either[A, R] {
-	var other either[A, R]
+func MapRight[L any, R any, R2 any](e Either[L, R], fn func(value R) R2) Either[L, R2] {
+	var other either[L, R2]
 	if e.IsRight() {
-		other = either[A, R]{t: _RIGHT, right: fn(e.Right().Unwrap())}
+		other = either[L, R2]{t: _RIGHT, right: fn(e.Right().Unwrap())}
 	} else {
-		other = either[A, R]{t: _LEFT, left: e.Left().Unwrap()}
+		other = either[L, R2]{t: _LEFT, left: e.Left().Unwrap()}
 	}
 	return &other
 }
 
-func MapRightFrom[A any, B any, R any](e Either[A, B], fn func(value B) Either[A, R]) Either[A, R] {
+func MapRightFrom[L any, R any, R2 any](e Either[L, R], fn func(value R) Either[L, R2]) Either[L, R2] {
 	if e.IsRight() {
 		return fn(e.Right().Unwrap())
 	} else {
-		return &either[A, R]{t: _LEFT, left: e.Left().Unwrap()}
+		return &either[L, R2]{t: _LEFT, left: e.Left().Unwrap()}
 	}
 }
 
-func MapLeft[A any, B any, L any](e Either[A, B], fn func(value A) L) Either[L, B] {
-	var other either[L, B]
+func MapLeft[L any, R any, L2 any](e Either[L, R], fn func(value L) L2) Either[L2, R] {
+	var other either[L2, R]
 	if e.IsLeft() {
-		other = either[L, B]{t: _LEFT, left: fn(e.Left().Unwrap())}
+		other = either[L2, R]{t: _LEFT, left: fn(e.Left().Unwrap())}
 	} else {
-		other = either[L, B]{t: _RIGHT, right: e.Right().Unwrap()}
+		other = either[L2, R]{t: _RIGHT, right: e.Right().Unwrap()}
 	}
 	return &other
 }
 
-func MapLeftFrom[A any, B any, L any](e Either[A, B], fn func(value A) Either[L, B]) Either[L, B] {
+func MapLeftFrom[L any, R any, L2 any](e Either[L, R], fn func(value L) Either[L2, R]) Either[L2, R] {
 	if e.IsLeft() {
 		return fn(e.Left().Unwrap())
 	} else {
-		return &either[L, B]{t: _RIGHT, right: e.Right().Unwrap()}
+		return &either[L2, R]{t: _RIGHT, right: e.Right().Unwrap()}
 	}
 }
