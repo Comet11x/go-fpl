@@ -3,8 +3,8 @@ package core
 type Either[L any, R any] interface {
 	IsLeft() bool
 	IsRight() bool
-	IfLeft(func(L)) bool
-	IfRight(func(R)) bool
+	IfLeft(func(L)) Either[L, R]
+	IfRight(func(R)) Either[L, R]
 	Left() Option[L]
 	LeftAsPtr() Option[*L]
 	Right() Option[R]

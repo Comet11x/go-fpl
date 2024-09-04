@@ -9,10 +9,10 @@ type Result[T any] interface {
 	IsError() bool
 
 	// Calls a callback if the result is Ok
-	IfOk(func(T)) bool
+	IfOk(func(T)) Result[T]
 
 	// Calls a callback if the result is Error
-	IfError(func(error)) bool
+	IfError(func(error)) Result[T]
 
 	// Returns a value of the result or an alternative value
 	UnwrapOr(value T) T

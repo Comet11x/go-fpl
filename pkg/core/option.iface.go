@@ -3,8 +3,8 @@ package core
 type Option[T any] interface {
 	IsSome() bool
 	IsNone() bool
-	IfSome(func(value T)) bool
-	IfNone(func()) bool
+	IfSome(func(value T)) Option[T]
+	IfNone(func()) Option[T]
 	UnwrapOr(value T) T
 	UnwrapOrValueFrom(func() T) T
 	UnwrapAsPtrOr(value *T) *T
