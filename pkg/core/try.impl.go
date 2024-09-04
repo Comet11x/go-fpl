@@ -19,7 +19,7 @@ type try[A any, R any] struct {
 	status uint8
 }
 
-func (t try[A, R]) call() {
+func (t *try[A, R]) call() {
 	defer func() {
 		if e := recover(); e != nil {
 			t.e = e
@@ -31,23 +31,37 @@ func (t try[A, R]) call() {
 	t.r = t.fn(t.arg)
 }
 
-func (t try[A, R]) test() {
+func (t *try[A, R]) test() {
 	if t.status == _TRY_PND {
 		t.call()
 	}
 }
 
-func (t try[A, R]) IsSuccess() bool {
+func (t *try[A, R]) IsSuccess() bool {
 	t.test()
 	return t.status == _TRY_OK
 }
 
-func (t try[A, R]) IsFailure() bool {
+func (t *try[A, R]) IsFailure() bool {
 	t.test()
 	return t.status == _TRY_ERR
 }
 
-func (t try[A, R]) Success() Option[R] {
+func (t *try[A, R]) IfSuccess(fn func(R)) Try[R] {
+	if t.IsFailure() {
+		fn(t.r)
+	}
+	return t
+}
+
+func (t *try[A, R]) IfFailure(fn func(any)) Try[R] {
+	if t.IsFailure() {
+		fn(t.e)
+	}
+	return t
+}
+
+func (t *try[A, R]) Success() Option[R] {
 	t.test()
 	if t.status == _TRY_ERR {
 		return None[R]()
@@ -56,7 +70,7 @@ func (t try[A, R]) Success() Option[R] {
 	}
 }
 
-func (t try[A, R]) Failure() Option[any] {
+func (t *try[A, R]) Failure() Option[any] {
 	t.test()
 	if t.status == _TRY_ERR {
 		return Some(t.e)
@@ -65,7 +79,7 @@ func (t try[A, R]) Failure() Option[any] {
 	}
 }
 
-func (t try[A, R]) AsResult(errorFactory ...func(any) error) Result[R] {
+func (t *try[A, R]) AsResult(errorFactory ...func(any) error) Result[R] {
 	t.test()
 	if t.status == _TRY_ERR {
 		var err error
