@@ -1,23 +1,25 @@
 package core
 
-type Either[A any, B any] interface {
+type Either[L any, R any] interface {
 	IsLeft() bool
 	IsRight() bool
-	Left() Option[A]
-	LeftAsPtr() Option[*A]
-	Right() Option[B]
-	RightAsPtr() Option[*B]
-	ToTuple() (A, B)
-	ToTuplePtr() (*A, *B)
-	UnwrapLeft() A
-	UnwrapLeftOr(A) A
-	UnwrapLeftOrFrom(func() A) A
-	UnwrapLeftAsPtr() *A
-	UnwrapLeftAsPtrOrFrom(func() *A) *A
+	IfLeft(func(L)) bool
+	IfRight(func(R)) bool
+	Left() Option[L]
+	LeftAsPtr() Option[*L]
+	Right() Option[R]
+	RightAsPtr() Option[*R]
+	ToTuple() (L, R)
+	ToTuplePtr() (*L, *R)
+	UnwrapLeft() L
+	UnwrapLeftOr(L) L
+	UnwrapLeftOrFrom(func() L) L
+	UnwrapLeftAsPtr() *L
+	UnwrapLeftAsPtrOrFrom(func() *L) *L
 
-	UnwrapRight() B
-	UnwrapRightOr(B) B
-	UnwrapRightOrFrom(func() B) B
-	UnwrapRightAsPtr() *B
-	UnwrapRightAsPtrOrFrom(func() *B) *B
+	UnwrapRight() R
+	UnwrapRightOr(R) R
+	UnwrapRightOrFrom(func() R) R
+	UnwrapRightAsPtr() *R
+	UnwrapRightAsPtrOrFrom(func() *R) *R
 }
