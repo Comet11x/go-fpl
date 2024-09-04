@@ -14,20 +14,18 @@ func (r *result[T]) IsError() bool {
 	return r.t == _ERROR
 }
 
-func (r *result[T]) IfOk(fn func(T)) bool {
-	cond := r.IsOk()
-	if cond {
+func (r *result[T]) IfOk(fn func(T)) Result[T] {
+	if r.IsOk() {
 		fn(r.ok)
 	}
-	return cond
+	return r
 }
 
-func (r *result[T]) IfError(fn func(error)) bool {
-	cond := r.IsError()
-	if cond {
+func (r *result[T]) IfError(fn func(error)) Result[T] {
+	if r.IsError() {
 		fn(r.err)
 	}
-	return cond
+	return r
 }
 
 func (r *result[T]) UnwrapOr(value T) T {
