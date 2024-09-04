@@ -9,10 +9,10 @@ type Result[T any] interface {
 	IsError() bool
 
 	// Calls a callback if the result is Ok
-	IfOk(func(T)) Result[T]
+	IfOk(func(value T)) Result[T]
 
 	// Calls a callback if the result is Error
-	IfError(func(error)) Result[T]
+	IfError(func(err error)) Result[T]
 
 	// Returns a value of the result or an alternative value
 	UnwrapOr(value T) T
@@ -56,15 +56,15 @@ type Result[T any] interface {
 
 	Error() Option[error]
 
-	MapOk(fn func(v T) T) Result[T]
-	MapOkFrom(fn func(v T) Result[T]) Result[T]
+	MapOk(fn func(value T) T) Result[T]
+	MapOkFrom(fn func(value T) Result[T]) Result[T]
 
-	MapOkAsOption(fn func(v T) T) Option[T]
-	MapOkAsOptionFrom(fn func(v T) Option[T]) Option[T]
+	MapOkAsOption(fn func(value T) T) Option[T]
+	MapOkAsOptionFrom(fn func(value T) Option[T]) Option[T]
 
-	MapErr(fn func(e error) T) Result[T]
-	MapErrFrom(fn func(e error) Result[T]) Result[T]
+	MapErr(fn func(err error) T) Result[T]
+	MapErrFrom(fn func(err error) Result[T]) Result[T]
 
-	MapErrAs(fn func(e error) T) Option[T]
-	MapErrAsFrom(fn func(e error) Option[T]) Option[T]
+	MapErrAs(fn func(err error) T) Option[T]
+	MapErrAsFrom(fn func(err error) Option[T]) Option[T]
 }
