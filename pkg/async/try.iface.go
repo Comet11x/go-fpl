@@ -7,7 +7,9 @@ import (
 type Try[T any] interface {
 	IsSuccess() Promise[bool]
 	IsFailure() Promise[bool]
+	IfSuccess(func(value T))
+	IfFailure(func(value any))
 	Success() Promise[T]
 	Failure() Promise[any]
-	ToResult(errorFactory ...func(any) error) Promise[core.Result[T]]
+	AsResult(errorFactory ...func(any) error) Promise[core.Result[T]]
 }
