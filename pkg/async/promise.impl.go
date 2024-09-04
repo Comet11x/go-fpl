@@ -11,12 +11,12 @@ type promise[T any] struct {
 	status          atomic.Uint32
 	cond            *sync.Cond
 	resultMutex     *sync.Mutex
+	handlerMutex    sync.RWMutex
 	successfulValue core.Option[T]
 	failedValue     core.Option[any]
-	handlerMutex    sync.RWMutex
-	thenHandler     []Resolve[T]
-	catchHandler    []Reject
-	finallyHandler  []func()
+	thenHandler     []ResolveHandler[T]
+	catchHandler    []RejectedHandler
+	finallyHandler  []FinallyHandler
 }
 
 func (p *promise[T]) run(executor func(func(T), func(any))) {
