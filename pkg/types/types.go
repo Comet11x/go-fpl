@@ -1,6 +1,6 @@
 package types
 
-type Void interface{}
+type Void = struct{}
 
 type Int interface {
 	~int | ~int8 | ~int16 | ~int32 | ~int64
