@@ -10,18 +10,21 @@ func TestPromise(t *testing.T) {
 	done := atomic.Bool{}
 	promise := Async[string](func(resolve func(string), reject func(any)) {
 		time.Sleep(time.Second * 2)
-		resolve("Hello")
+		resolve("Hola")
 	})
 
 	promise.Then(func(s string) {
 		done.Store(true)
-		t.Log("A value from the promise: ", s)
+		t.Logf("This handler receives a message: '%s'", s)
 	})
 
 	promise.Await()
 
-	// time.Sleep(time.Second * 3)
+	time.Sleep(time.Second * 3)
+	promise.Then(func(s string) {
+		t.Logf("Another handler receives a message: '%s'", s)
+	})
 	if !done.Load() {
-		t.Fatal("it must be true")
+		t.Fatal("It must be true")
 	}
 }
