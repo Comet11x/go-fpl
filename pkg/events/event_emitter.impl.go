@@ -122,15 +122,13 @@ func (ee *eventEmitter) Emit(e Event) {
 	ee.emit(e, CreateSyncModeEventPropagation())
 }
 
-func (ee *eventEmitter) Defer(e Event, timeout time.Duration) (cancel func()) {
+func (ee *eventEmitter) Defer(e Event, timeout time.Duration) func() {
 	dc := async.Defer(func(e Event) interface{} {
 		ee.AsyncEmit(e)
 		return nil
 	}, e, timeout)
 
-	return func() {
-		dc.Cancel()
-	}
+	return dc.Cancel
 }
 
 func (ee *eventEmitter) listen(e Event) {
