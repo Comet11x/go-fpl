@@ -8,35 +8,55 @@ import (
 )
 
 type promise[T any] struct {
-	status          atomic.Uint32
-	cond            sync.Cond
-	resultMutex     sync.Mutex
-	successfulValue core.Option[T]
-	failedValue     core.Option[any]
-	handlerMutex    sync.RWMutex
-	thenHandler     []Resolve[T]
-	catchHandler    []func(any)
-	finallyHandler  []func()
+	status         atomic.Uint32
+	cond           *sync.Cond
+	resultMutex    *sync.RWMutex
+	handlerMutex   sync.RWMutex
+	result         core.Either[T, any]
+	thenHandler    []ResolveHandler[T]
+	catchHandler   []RejectedHandler
+	finallyHandler []FinallyHandler
 }
 
-func (p *promise[T]) run(executor func(func(T), func(any))) {
-	t := core.Call[any, any](func(_ any) any {
+func (p *promise[T]) call(executor func(func(T), func(any))) {
+	core.ImmediateCall[any, any](func(_ any) any {
 		executor(p.resolve, p.reject)
 		return nil
-	}, nil,
-	)
-	if t.IsFailure() && p.IsPending() {
-		p.reject(t.Failure().Unwrap())
-	}
+	}, nil).
+		IfFailure(func(value any) {
+			if p.IsPending() {
+				p.reject(value)
+			}
+		})
 }
 
 func (p *promise[T]) resolve(v T) {
 	p.cond.L.Lock()
+	p.result = core.Left[T, any](v)
 	p.status.Store(FULFILLED)
-	p.successfulValue = core.Some(v)
-	p.failedValue = core.None[any]()
+
+	p.handlerMutex.Lock()
 	for _, handler := range p.thenHandler {
-		go handler(v)
+		handler(v)
+	}
+	for _, handler := range p.finallyHandler {
+		handler()
+	}
+	p.thenHandler = nil
+	p.catchHandler = nil
+	p.finallyHandler = nil
+	p.handlerMutex.Unlock()
+	p.cond.Broadcast()
+	p.cond.L.Unlock()
+}
+
+func (p *promise[T]) reject(e any) {
+	p.handlerMutex.Lock()
+	p.result = core.Right[T, any](e)
+	p.status.Store(REJECTED)
+	p.handlerMutex.Lock()
+	for _, handler := range p.catchHandler {
+		go handler(e)
 	}
 	for _, handler := range p.finallyHandler {
 		go handler()
@@ -44,70 +64,83 @@ func (p *promise[T]) resolve(v T) {
 	p.thenHandler = nil
 	p.catchHandler = nil
 	p.finallyHandler = nil
-	p.cond.Broadcast()
-	p.cond.L.Unlock()
-}
-
-func (p *promise[T]) reject(e any) {
-	p.handlerMutex.Lock()
-	p.status.Store(REJECTED)
-	p.successfulValue = core.None[T]()
-	p.failedValue = core.Some(e)
-	for _, handler := range p.catchHandler {
-		go handler(e)
-	}
-	p.thenHandler = nil
-	p.catchHandler = nil
+	p.handlerMutex.Unlock()
 	p.handlerMutex.Unlock()
 }
 
 // ----------------------------------------------------------------
-//  PUBLIC methods
+//
+//	PUBLIC methods
+//
 // ----------------------------------------------------------------
-
 func (p *promise[T]) Then(fn func(T)) Promise[T] {
-	p.handlerMutex.RLock()
-	isDone := p.thenHandler == nil
-	switch true {
-	case isDone && p.status.Load() == FULFILLED:
-		go fn(p.successfulValue.Unwrap())
-	case !isDone:
-		p.thenHandler = append(p.thenHandler, fn)
+	if p.status.Load() != PENDING {
+		p.result.IfLeft(fn)
+	} else {
+		p.resultMutex.RLock()
+		if p.result == nil {
+			p.resultMutex.RUnlock()
+			// result is not done yet
+			p.handlerMutex.Lock()
+			p.thenHandler = append(p.thenHandler, fn)
+			p.handlerMutex.Unlock()
+		} else {
+			p.resultMutex.RUnlock()
+			// result is already done
+			p.result.IfLeft(fn)
+		}
 	}
-	p.handlerMutex.RUnlock()
 	return p
 }
 
 func (p *promise[T]) Catch(fn func(any)) Promise[T] {
-	p.handlerMutex.RLock()
-	isDone := p.catchHandler == nil
-	switch true {
-	case isDone && p.status.Load() == REJECTED:
-		// call
-		go fn(p.failedValue.Unwrap())
-	case !isDone:
-		p.catchHandler = append(p.catchHandler, fn)
+	if p.status.Load() != PENDING {
+		p.result.IfRight(fn)
+	} else {
+		p.resultMutex.RLock()
+		if p.result == nil {
+			p.resultMutex.RUnlock()
+			// result is not done yet
+			p.handlerMutex.Lock()
+			p.catchHandler = append(p.catchHandler, fn)
+			p.handlerMutex.Unlock()
+		} else {
+			p.resultMutex.RUnlock()
+			// result is already done
+			p.result.IfRight(fn)
+		}
 	}
-	p.handlerMutex.RUnlock()
 	return p
 }
 
-func (p *promise[T]) Finally(func()) Promise[T] {
+func (p *promise[T]) Finally(fn func()) Promise[T] {
+	if p.status.Load() != PENDING {
+		fn()
+	} else {
+		p.resultMutex.RLock()
+		if p.result == nil {
+			p.resultMutex.RUnlock()
+			// result is not done yet
+			p.handlerMutex.Lock()
+			p.finallyHandler = append(p.finallyHandler, fn)
+			p.handlerMutex.Unlock()
+		} else {
+			p.resultMutex.RUnlock()
+			// result is already done
+			fn()
+		}
+	}
 	return p
 }
 
 func (p *promise[T]) Await() core.Either[T, any] {
-
-	if p.status.Load() == PENDING {
+	if p.status.Load() != PENDING {
+		return p.result
+	} else {
 		p.cond.L.Lock()
 		p.cond.Wait()
 		p.cond.L.Unlock()
-	}
-
-	if p.successfulValue.IsSome() {
-		return core.Left[T, any](p.successfulValue.Unwrap())
-	} else {
-		return core.Right[T, any](p.failedValue.Unwrap())
+		return p.result
 	}
 }
 
@@ -132,4 +165,8 @@ func (p *promise[T]) Status() string {
 	default:
 		return "pending"
 	}
+}
+
+func (p *promise[T]) Future() Future[T] {
+	return &future[T]{}
 }
