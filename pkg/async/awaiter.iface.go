@@ -1,10 +1,7 @@
 package async
 
 import (
-	"github.com/comet11x/go-fpl/pkg/core"
+	"github.com/comet11x/go-fpl/pkg/types"
 )
 
-type Awaiter[T any] interface {
-	Await() core.Either[T, any]
-}
-
+type Awaiter[T any] types.Awaiter[T]
