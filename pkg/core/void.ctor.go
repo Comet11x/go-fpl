@@ -1,5 +1,5 @@
 package core
 
-func Void() interface{} {
+func Void() struct{} {
 	return struct{}{}
 }
