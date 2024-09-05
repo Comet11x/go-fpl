@@ -6,8 +6,8 @@ import (
 	"github.com/comet11x/go-fpl/pkg/core"
 )
 
-func Async[T any](fn func(resolve func(T), reject func(any))) Promise[T] {
-	m := &sync.Mutex{}
+func Async[T any](executor func(resolve func(T), reject func(any))) Promise[T] {
+	m := &sync.RWMutex{}
 	p := promise[T]{
 		thenHandler:    make([]ResolveHandler[T], 0),
 		catchHandler:   make([]RejectedHandler, 0),
@@ -16,7 +16,9 @@ func Async[T any](fn func(resolve func(T), reject func(any))) Promise[T] {
 		cond:           sync.NewCond(m),
 	}
 	p.status.Store(PENDING)
-	go p.run(fn)
+
+	// call the executor
+	go p.call(executor)
 	return &p
 }
 
