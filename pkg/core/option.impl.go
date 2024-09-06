@@ -20,6 +20,13 @@ func (o *option[T]) IfSome(fn func(v T)) Option[T] {
 	return o
 }
 
+func (o *option[T]) IfSomeAsPtr(fn func(v *T)) Option[T] {
+	if o.IsSome() {
+		fn(&o.value)
+	}
+	return o
+}
+
 func (o *option[T]) IfNone(fn func()) Option[T] {
 	if o.IsNone() {
 		fn()
