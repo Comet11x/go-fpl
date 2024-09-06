@@ -4,7 +4,9 @@ type Either[L any, R any] interface {
 	IsLeft() bool
 	IsRight() bool
 	IfLeft(func(value L)) Either[L, R]
+	IfLeftAsPtr(func(value *L)) Either[L, R]
 	IfRight(func(value R)) Either[L, R]
+	IfRightAsPtr(func(value *R)) Either[L, R]
 	Left() Option[L]
 	LeftAsPtr() Option[*L]
 	Right() Option[R]

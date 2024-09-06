@@ -21,9 +21,23 @@ func (e *either[A, B]) IfLeft(fn func(A)) Either[A, B] {
 	return e
 }
 
+func (e *either[A, B]) IfLeftAsPtr(fn func(*A)) Either[A, B] {
+	if e.IsLeft() {
+		fn(&e.left)
+	}
+	return e
+}
+
 func (e *either[A, B]) IfRight(fn func(B)) Either[A, B] {
 	if e.IsRight() {
 		fn(e.right)
+	}
+	return e
+}
+
+func (e *either[A, B]) IfRightAsPtr(fn func(*B)) Either[A, B] {
+	if e.IsRight() {
+		fn(&e.right)
 	}
 	return e
 }
