@@ -9,7 +9,7 @@ import (
 func fork[T any](p Promise[T], logf func(format string, args ...any)) {
 	either := p.Await()
 	either.IfLeft(func(value T) {
-		logf("2nd goroutine says %s", value)
+		logf("2nd goroutine says '%s'", value)
 	})
 }
 
@@ -44,7 +44,7 @@ func TestPromise(t *testing.T) {
 	promise.Await().
 		IfLeft(func(value string) {
 			// The result has received successfully
-			t.Logf("2nd goroutine says '%s'", value)
+			t.Logf("1nd goroutine says '%s'", value)
 		}).
 		IfRight(func(value any) {
 			// An abnormal result
