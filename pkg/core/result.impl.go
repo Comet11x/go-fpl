@@ -21,6 +21,13 @@ func (r *result[T]) IfOk(fn func(T)) Result[T] {
 	return r
 }
 
+func (r *result[T]) IfOkAsPtr(fn func(*T)) Result[T] {
+	if r.IsOk() {
+		fn(&r.ok)
+	}
+	return r
+}
+
 func (r *result[T]) IfError(fn func(error)) Result[T] {
 	if r.IsError() {
 		fn(r.err)

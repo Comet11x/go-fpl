@@ -11,6 +11,9 @@ type Result[T any] interface {
 	// Calls a callback if the result is Ok
 	IfOk(func(value T)) Result[T]
 
+	// Calls a callback if the result is Ok
+	IfOkAsPtr(func(value *T)) Result[T]
+
 	// Calls a callback if the result is Error
 	IfError(func(err error)) Result[T]
 
