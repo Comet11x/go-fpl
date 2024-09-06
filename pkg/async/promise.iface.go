@@ -16,11 +16,14 @@ type Promise[T any] interface {
 	// Returns true if the promise has the pending state
 	IsPending() bool
 
-	// Returns true if the promise has the resolved state
-	IsResolved() bool
+	// Returns true if the promise has the fulfilled state
+	IsFulfilled() bool
 
 	// Returns true if the promise has the rejected state
 	IsRejected() bool
+
+	// Returns true if the promise has the resolved state or the rejected state
+	IsSettled() bool
 
 	// Returns a status of the promise
 	Status() string

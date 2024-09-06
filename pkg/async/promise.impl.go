@@ -148,7 +148,19 @@ func (p *promise[T]) IsPending() bool {
 	return p.status.Load() == PENDING
 }
 
-func (p *promise[T]) IsResolved() bool {
+func (p *promise[T]) IsSettled() bool {
+	var is bool
+	switch p.status.Load() {
+	case FULFILLED:
+	case REJECTED:
+		is = true
+	default:
+		is = false
+	}
+	return is
+}
+
+func (p *promise[T]) IsFulfilled() bool {
 	return p.status.Load() == FULFILLED
 }
 
