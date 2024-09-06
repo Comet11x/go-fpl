@@ -9,7 +9,7 @@ type Try[T any] interface {
 	IsFailure() Promise[bool]
 	IfSuccess(func(value T))
 	IfFailure(func(value any))
-	Success() Promise[T]
-	Failure() Promise[any]
+	Success() Promise[core.Option[T]]
+	Failure() Promise[core.Option[any]]
 	AsResult(errorFactory ...func(any) error) Promise[core.Result[T]]
 }
