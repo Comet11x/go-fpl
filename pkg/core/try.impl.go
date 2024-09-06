@@ -54,9 +54,23 @@ func (t *try[A, R]) IfSuccess(fn func(R)) Try[R] {
 	return t
 }
 
+func (t *try[A, R]) IfSuccessAsPtr(fn func(*R)) Try[R] {
+	if t.IsFailure() {
+		fn(&t.r)
+	}
+	return t
+}
+
 func (t *try[A, R]) IfFailure(fn func(any)) Try[R] {
 	if t.IsFailure() {
 		fn(t.e)
+	}
+	return t
+}
+
+func (t *try[A, R]) IfFailureAsPtr(fn func(*any)) Try[R] {
+	if t.IsFailure() {
+		fn(&t.e)
 	}
 	return t
 }
