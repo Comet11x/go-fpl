@@ -7,13 +7,13 @@ import (
 type DeferredCall[T any] interface {
 
 	// Extends Awaiter
-	// If the deferred call is done it will return core.Left(core.Some(core.Try[T]))
-	// If the deferred call is canceled it will return core.Left(core.None[core.Try[T]]())
+	// If the deferred function is done it will return core.Left(core.Some(core.Try[T]))
+	// If the deferred function is canceled it will return core.Left(core.None[core.Try[T]]())
 	Awaiter[core.Option[core.Try[T]]]
 
-	// Cancels the deferred call
+	// Cancels the deferred function
 	Cancel()
 
-	// Returns true if the call was canceled
+	// Returns true if the deferred function was canceled
 	IsCanceled() bool
 }
