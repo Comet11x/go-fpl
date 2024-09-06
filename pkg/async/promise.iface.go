@@ -17,7 +17,7 @@ type Promise[T any] interface {
 	IsPending() bool
 
 	// Returns true if the promise has the resolved state
-	IsResolve() bool
+	IsResolved() bool
 
 	// Returns true if the promise has the rejected state
 	IsRejected() bool

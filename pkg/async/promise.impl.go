@@ -148,7 +148,7 @@ func (p *promise[T]) IsPending() bool {
 	return p.status.Load() == PENDING
 }
 
-func (p *promise[T]) IsResolve() bool {
+func (p *promise[T]) IsResolved() bool {
 	return p.status.Load() == FULFILLED
 }
 
