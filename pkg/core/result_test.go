@@ -8,7 +8,7 @@ import (
 func TestCreateOkResult(t *testing.T) {
 	s := "foo"
 	r := Ok[string](s)
-	if !r.IsOk() || r.IsError() {
+	if !r.IsOk() || r.IsErr() {
 		t.Fatal("it must be Ok[string]")
 	}
 }
@@ -16,7 +16,7 @@ func TestCreateOkResult(t *testing.T) {
 func TestCreateErrResult(t *testing.T) {
 	r := Err[string](errors.New("error"))
 
-	if r.IsOk() || !r.IsError() {
+	if r.IsOk() || !r.IsErr() {
 		t.Fatal("it must be Err[string]")
 	}
 }
@@ -37,18 +37,18 @@ func TestUnwrapForOk(t *testing.T) {
 		t.Fatalf("it must be equal %s ", s)
 	}
 
-	if r.Error().Unwrap() != nil {
+	if r.Err().Unwrap() != nil {
 		t.Fatal("it must be equal nil")
 	}
 }
 
-func TestUnwrapForError(t *testing.T) {
+func TestUnwrapForErr(t *testing.T) {
 	r := Err[string](errors.New("error"))
 	if len(r.Ok().Unwrap()) != 0 {
 		t.Fatal("it must be equal 0")
 	}
 
-	if r.Error().Unwrap() == nil {
+	if r.Err().Unwrap() == nil {
 		t.Fatal("it must be not equal nil")
 	}
 }
@@ -72,12 +72,12 @@ func TestUnwrapForOK(t *testing.T) {
 		t.Fatalf("it must be equal %s", s)
 	}
 
-	if r.Error().Unwrap() != nil {
+	if r.Err().Unwrap() != nil {
 		t.Fatal("it must be equal nil")
 	}
 }
 
-func TestUnwrapOrForError(t *testing.T) {
+func TestUnwrapOrForErr(t *testing.T) {
 	s := "foo"
 	r := Err[string](errors.New("error"))
 	v := r.UnwrapOr(s)
@@ -85,7 +85,7 @@ func TestUnwrapOrForError(t *testing.T) {
 		t.Fatalf("it must be equal %s", s)
 	}
 
-	if r.Error().Unwrap() == nil {
+	if r.Err().Unwrap() == nil {
 		t.Fatal("it must be not equal nil")
 	}
 }
@@ -107,7 +107,7 @@ func TestUnwrapAsPtrOrForOk(t *testing.T) {
 
 }
 
-func TestUnwrapAsPtrOrForError(t *testing.T) {
+func TestUnwrapAsPtrOrForErr(t *testing.T) {
 	s := "foo"
 	r := Err[string](errors.New("error"))
 	v := r.UnwrapAsPtrOr(&s)
@@ -115,7 +115,7 @@ func TestUnwrapAsPtrOrForError(t *testing.T) {
 		t.Fatalf("it must be equal %x", s)
 	}
 
-	if r.Error().Unwrap() == nil {
+	if r.Err().Unwrap() == nil {
 		t.Fatal("it must be not equal nil")
 	}
 }

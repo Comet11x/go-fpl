@@ -5,7 +5,7 @@ func EitherFromResult[T any](r Result[T]) Either[T, error] {
 	if r.IsOk() {
 		e = either[T, error]{t: _LEFT, left: r.Ok().Unwrap()}
 	} else {
-		e = either[T, error]{t: _RIGHT, right: r.Error().Unwrap()}
+		e = either[T, error]{t: _RIGHT, right: r.Err().Unwrap()}
 	}
 	return &e
 }

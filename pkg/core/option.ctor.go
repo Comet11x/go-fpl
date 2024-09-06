@@ -59,7 +59,7 @@ func MapOkAsOptionFrom[T any, U any](r Result[T], fn func(T) Option[U]) Option[U
 }
 
 func MapErrAsOption[T any, U any](r Result[T], fn func() U) Option[U] {
-	if r.IsError() {
+	if r.IsErr() {
 		return Some(fn())
 	} else {
 		return None[U]()
@@ -67,7 +67,7 @@ func MapErrAsOption[T any, U any](r Result[T], fn func() U) Option[U] {
 }
 
 func MapErrAsOptionFrom[T any, U any](r Result[T], fn func() Option[U]) Option[U] {
-	if r.IsError() {
+	if r.IsErr() {
 		return fn()
 	} else {
 		return None[U]()

@@ -10,7 +10,7 @@ func (r *result[T]) IsOk() bool {
 	return r.t == _OK
 }
 
-func (r *result[T]) IsError() bool {
+func (r *result[T]) IsErr() bool {
 	return r.t == _ERROR
 }
 
@@ -28,8 +28,8 @@ func (r *result[T]) IfOkAsPtr(fn func(*T)) Result[T] {
 	return r
 }
 
-func (r *result[T]) IfError(fn func(error)) Result[T] {
-	if r.IsError() {
+func (r *result[T]) IfErr(fn func(error)) Result[T] {
+	if r.IsErr() {
 		fn(r.err)
 	}
 	return r
@@ -72,14 +72,14 @@ func (r *result[T]) UnwrapOrDefault() T {
 }
 
 func (r *result[T]) Unwrap() T {
-	if r.IsError() {
+	if r.IsErr() {
 		panic("called `Result.Unwrap()` on an `Err` value")
 	}
 	return r.ok
 }
 
 func (r *result[T]) UnwrapAsPtr() *T {
-	if r.IsError() {
+	if r.IsErr() {
 		panic("called `Result.UnwrapAsPtr()` on an `Err` value")
 	}
 	return &r.ok
@@ -93,7 +93,7 @@ func (r *result[T]) UnwrapErr() error {
 }
 
 func (r *result[T]) UnwrapErrOr(err error) error {
-	if r.IsError() {
+	if r.IsErr() {
 		return r.err
 	} else {
 		return err
@@ -144,8 +144,8 @@ func (r *result[T]) OkPtr() Option[*T] {
 	}
 }
 
-func (r *result[T]) Error() Option[error] {
-	if r.IsError() {
+func (r *result[T]) Err() Option[error] {
+	if r.IsErr() {
 		return Some[error](r.err)
 	} else {
 		return None[error]()
@@ -185,7 +185,7 @@ func (r *result[T]) MapOkAsOptionFrom(fn func(v T) Option[T]) Option[T] {
 }
 
 func (r *result[T]) MapErr(fn func(e error) T) Result[T] {
-	if r.IsError() {
+	if r.IsErr() {
 		return Ok(fn(r.err))
 	} else {
 		return r
@@ -193,7 +193,7 @@ func (r *result[T]) MapErr(fn func(e error) T) Result[T] {
 }
 
 func (r *result[T]) MapErrFrom(fn func(e error) Result[T]) Result[T] {
-	if r.IsError() {
+	if r.IsErr() {
 		return fn(r.err)
 	} else {
 		return r
@@ -201,7 +201,7 @@ func (r *result[T]) MapErrFrom(fn func(e error) Result[T]) Result[T] {
 }
 
 func (r *result[T]) MapErrAs(fn func(e error) T) Option[T] {
-	if r.IsError() {
+	if r.IsErr() {
 		return Some(fn(r.err))
 	} else {
 		return None[T]()
@@ -209,7 +209,7 @@ func (r *result[T]) MapErrAs(fn func(e error) T) Option[T] {
 }
 
 func (r *result[T]) MapErrAsFrom(fn func(e error) Option[T]) Option[T] {
-	if r.IsError() {
+	if r.IsErr() {
 		return fn(r.err)
 	} else {
 		return None[T]()

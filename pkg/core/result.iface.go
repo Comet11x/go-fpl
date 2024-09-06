@@ -6,7 +6,7 @@ type Result[T any] interface {
 	IsOk() bool
 
 	// Returns false if the item of Result is Err[T]
-	IsError() bool
+	IsErr() bool
 
 	// Calls a callback if the result is Ok
 	IfOk(func(value T)) Result[T]
@@ -15,7 +15,7 @@ type Result[T any] interface {
 	IfOkAsPtr(func(value *T)) Result[T]
 
 	// Calls a callback if the result is Error
-	IfError(func(err error)) Result[T]
+	IfErr(func(err error)) Result[T]
 
 	// Returns a value of the result or an alternative value
 	UnwrapOr(value T) T
@@ -57,7 +57,7 @@ type Result[T any] interface {
 	Ok() Option[T]
 	OkPtr() Option[*T]
 
-	Error() Option[error]
+	Err() Option[error]
 
 	MapOk(fn func(value T) T) Result[T]
 	MapOkFrom(fn func(value T) Result[T]) Result[T]
