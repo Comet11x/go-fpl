@@ -6,7 +6,7 @@ import (
 	"github.com/comet11x/go-fpl/pkg/sync"
 )
 
-func CreateEventListenerContext(eventName string, ch chan<- EventListenerContextInfo) EventListenerContext {
+func newEventListenerContext(eventName string, ch chan<- EventListenerContextInfo) EventListenerContext {
 	latch := atomic.Value{}
 	latch.Store(true)
 	return &eventListenerContext{

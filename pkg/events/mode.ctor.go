@@ -1,9 +1,9 @@
 package events
 
-func CreateAsyncModeEventPropagation() ModeEventPropagation {
+func AsyncModeEventPropagation() ModeEventPropagation {
 	return &modeEventPropagation{m: _ASYNC_MODE}
 }
 
-func CreateSyncModeEventPropagation() ModeEventPropagation {
+func SyncModeEventPropagation() ModeEventPropagation {
 	return &modeEventPropagation{m: _SYNC_MODE}
 }

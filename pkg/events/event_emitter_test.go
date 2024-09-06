@@ -3,10 +3,12 @@ package events
 import (
 	"fmt"
 	"testing"
+
+	"github.com/comet11x/go-fpl/pkg/types"
 )
 
 func emit(ee EventEmitter) {
-	ee.AsyncEmit(CreateEventWithoutPayload("TEST"))
+	ee.AsyncEmit(EventWithoutPayload("TEST"))
 }
 
 func eventHandle(e Event) {
@@ -14,13 +16,14 @@ func eventHandle(e Event) {
 }
 
 func TestCreateEE(t *testing.T) {
-	ee := CreateEventEmitter()
+	ee := NewEventEmitter()
 
-	ee.On("TEST", CreateEventListener(func(e Event) {
+	ee.On("TEST", NewEventListener(func(e Event) {
 		eventHandle(e)
 		ee.RemoveAllEventListeners("TEST")
 	}))
 
 	go emit(ee)
-	Awaiter(ee).Unwrap().Await()
+	TryAwaiterFrom(ee).
+		IfOk(func(value types.Awaiter[struct{}]) {})
 }

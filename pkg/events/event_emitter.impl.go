@@ -57,7 +57,7 @@ func (ee *eventEmitter) On(eventName string, l EventListener) {
 	ee.mu.RUnlock()
 
 	if !ok {
-		lc = CreateEventListenerContext(eventName, ee.listener)
+		lc = newEventListenerContext(eventName, ee.listener)
 		ee.mu.Lock()
 		ee.storage[eventName] = lc
 		ee.mu.Unlock()
@@ -72,7 +72,7 @@ func (ee *eventEmitter) Once(eventName string, l EventListener) {
 	ee.mu.RUnlock()
 
 	if !ok {
-		lc = CreateEventListenerContext(eventName, ee.listener)
+		lc = newEventListenerContext(eventName, ee.listener)
 		ee.mu.Lock()
 		ee.storage[eventName] = lc
 		ee.mu.Unlock()
@@ -119,7 +119,7 @@ func (ee *eventEmitter) emit(e Event, mode ModeEventPropagation) {
 }
 
 func (ee *eventEmitter) Emit(e Event) {
-	ee.emit(e, CreateSyncModeEventPropagation())
+	ee.emit(e, SyncModeEventPropagation())
 }
 
 func (ee *eventEmitter) Defer(e Event, timeout time.Duration) func() {
@@ -136,7 +136,7 @@ func (ee *eventEmitter) listen(e Event) {
 }
 
 func (ee *eventEmitter) AsyncEmit(e Event) {
-	go ee.emit(e, CreateAsyncModeEventPropagation())
+	go ee.emit(e, AsyncModeEventPropagation())
 }
 
 func (ee *eventEmitter) Events() []string {
@@ -164,5 +164,5 @@ func (em *eventEmitter) Await() core.Result[types.Void] {
 }
 
 func (ee *eventEmitter) ToListener() EventListener {
-	return CreateEventListener(ee.listen)
+	return NewEventListener(ee.listen)
 }

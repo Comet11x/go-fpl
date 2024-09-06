@@ -5,7 +5,7 @@ type EventListenerContext interface {
 
 	IsSame(EventListenerContext) bool
 
-	IsLock() bool
+	IsLocked() bool
 
 	// Returns an event name
 	EventName() string

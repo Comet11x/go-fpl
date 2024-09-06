@@ -6,7 +6,7 @@ import (
 	"github.com/comet11x/go-fpl/pkg/sync"
 )
 
-func CreateEventEmitter() EventEmitter {
+func NewEventEmitter() EventEmitter {
 	ee := &eventEmitter{
 		storage:  make(map[string]EventListenerContext),
 		mu:       sync.RealRWLocker(),

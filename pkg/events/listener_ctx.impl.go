@@ -22,7 +22,7 @@ type eventListenerContext struct {
 	latch      atomic.Value
 }
 
-func (lc *eventListenerContext) IsLock() bool {
+func (lc *eventListenerContext) IsLocked() bool {
 	return lc.latch.Load().(bool)
 }
 

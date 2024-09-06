@@ -6,21 +6,21 @@ import (
 	"github.com/comet11x/go-fpl/pkg/core"
 )
 
-func TestCreateEventListener(t *testing.T) {
-	CreateEventListener(func(e Event) {
+func TestNewEventListener(t *testing.T) {
+	NewEventListener(func(e Event) {
 		//
 	})
 }
 
 func TestGetIdOfEventListener(t *testing.T) {
-	l := CreateEventListener(func(e Event) {})
+	l := NewEventListener(func(e Event) {})
 	_ = l.Id()
 }
 
 func TestCallOfEventListener(t *testing.T) {
 	eventName := "event"
 	payload := "test"
-	l := CreateEventListener(func(e Event) {
+	l := NewEventListener(func(e Event) {
 		if e.Name() != eventName {
 			t.Fatalf("It must be '%s'", eventName)
 		}
@@ -29,5 +29,5 @@ func TestCallOfEventListener(t *testing.T) {
 		}
 	})
 
-	l.Call(CreateEventWithoutPayload(eventName, payload))
+	l.Call(EventWithoutPayload(eventName, payload))
 }

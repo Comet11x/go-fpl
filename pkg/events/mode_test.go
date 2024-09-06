@@ -3,7 +3,7 @@ package events
 import "testing"
 
 func TestCreateAsyncMode(t *testing.T) {
-	m := CreateAsyncModeEventPropagation()
+	m := AsyncModeEventPropagation()
 
 	if !m.IsAsync() || m.IsSync() {
 		t.Fatal("It must be an asynchronous mode")
@@ -11,7 +11,7 @@ func TestCreateAsyncMode(t *testing.T) {
 }
 
 func TestCreateSyncMode(t *testing.T) {
-	m := CreateSyncModeEventPropagation()
+	m := SyncModeEventPropagation()
 
 	if !m.IsSync() || m.IsAsync() {
 		t.Fatal("It must be a synchronous mode")
@@ -19,33 +19,33 @@ func TestCreateSyncMode(t *testing.T) {
 }
 
 func TestSyncModeIsEqualOtherSyncMode(t *testing.T) {
-	m := CreateSyncModeEventPropagation()
+	m := SyncModeEventPropagation()
 
-	if !m.IsEqual(CreateSyncModeEventPropagation()) {
+	if !m.IsEqual(SyncModeEventPropagation()) {
 		t.Fatal("It must be equal")
 	}
 }
 
 func TestSyncModeIsNotEqualAsyncMode(t *testing.T) {
-	m := CreateSyncModeEventPropagation()
+	m := SyncModeEventPropagation()
 
-	if m.IsEqual(CreateAsyncModeEventPropagation()) {
+	if m.IsEqual(AsyncModeEventPropagation()) {
 		t.Fatal("It must be not equal")
 	}
 }
 
 func TestAsyncModeIsEqualOtherAsyncMode(t *testing.T) {
-	m := CreateAsyncModeEventPropagation()
+	m := AsyncModeEventPropagation()
 
-	if !m.IsEqual(CreateAsyncModeEventPropagation()) {
+	if !m.IsEqual(AsyncModeEventPropagation()) {
 		t.Fatal("It must be equal")
 	}
 }
 
 func TestAsyncModeIsNotEqualSyncMode(t *testing.T) {
-	m := CreateAsyncModeEventPropagation()
+	m := AsyncModeEventPropagation()
 
-	if m.IsEqual(CreateSyncModeEventPropagation()) {
+	if m.IsEqual(SyncModeEventPropagation()) {
 		t.Fatal("It must be not equal")
 	}
 }

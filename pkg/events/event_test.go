@@ -5,7 +5,7 @@ import (
 )
 
 func TestCreateEventWithPayload(t *testing.T) {
-	e := CreateEventWithPayload("foo", []int{1, 3, 5}, "TEST")
+	e := EventWithPayload("foo", []int{1, 3, 5}, "TEST")
 
 	if e.Name() != "foo" {
 		t.Fatal("event name must be 'foo'")

@@ -1,6 +1,7 @@
 package events
 
 import (
+	"errors"
 	"reflect"
 	"strings"
 
@@ -8,10 +9,11 @@ import (
 	"github.com/comet11x/go-fpl/pkg/types"
 )
 
-func Awaiter(ee EventEmitter) core.Option[types.Awaiter[types.Void]] {
+// # TryAwaiterFrom constructor
+func TryAwaiterFrom(ee EventEmitter) core.Result[types.Awaiter[types.Void]] {
 	if strings.Contains(reflect.TypeOf(ee).String(), "*events.eventEmitter") {
-		return core.Some(ee.(types.Awaiter[types.Void]))
+		return core.Ok(ee.(types.Awaiter[types.Void]))
 	} else {
-		return core.None[types.Awaiter[types.Void]]()
+		return core.Err[types.Awaiter[types.Void]](errors.New("incompatible types"))
 	}
 }
