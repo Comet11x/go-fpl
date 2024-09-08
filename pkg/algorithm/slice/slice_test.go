@@ -43,3 +43,19 @@ func TestMap(t *testing.T) {
 		t.Fatal("the slice has incorrect values")
 	}
 }
+
+func TestReduce(t *testing.T) {
+	s := []int{1, 2, 3, 4, 5}
+	expectedValue := 120
+
+	prod := Reduce[int, int](s, func(current int, previous ...int) int {
+		return current * Head(previous).UnwrapOr(1)
+	})
+
+	t.Logf("expected value: %d", expectedValue)
+	t.Logf("real value: %d", prod)
+
+	if prod != expectedValue {
+		t.Fatalf("It must be equal %d", expectedValue)
+	}
+}
