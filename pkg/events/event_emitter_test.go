@@ -18,12 +18,16 @@ func eventHandle(e Event) {
 func TestCreateEE(t *testing.T) {
 	ee := NewEventEmitter()
 
+	// add an event listener
 	ee.On("TEST", NewEventListener(func(e Event) {
 		eventHandle(e)
 		ee.RemoveAllEventListeners("TEST")
 	}))
 
 	go emit(ee)
+
 	TryAwaiterFrom(ee).
-		IfOk(func(value types.Awaiter[struct{}]) {})
+		IfOk(func(value types.Awaiter[types.Void]) {
+			t.Log("All listeners have unsubscribed")
+		})
 }
