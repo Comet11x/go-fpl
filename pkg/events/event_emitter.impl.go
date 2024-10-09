@@ -156,11 +156,11 @@ func (ee *eventEmitter) ListenerCount(eventName string) int {
 	return c
 }
 
-func (em *eventEmitter) Await() core.Result[types.Void] {
+func (em *eventEmitter) Await() core.Either[types.Void, any] {
 	for !em.empty.Load().(bool) {
 		// await
 	}
-	return core.Ok[types.Void](core.Void())
+	return core.Left[types.Void, any](core.Void())
 }
 
 func (ee *eventEmitter) ToListener() EventListener {
