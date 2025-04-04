@@ -1,11 +1,11 @@
 package core
 
-func EitherFromResult[T any](r Result[T]) Either[T, error] {
-	var e either[T, error]
+func EitherFromResult[T any, E any](r Result[T, E]) Either[T, E] {
+	var e either[T, E]
 	if r.IsOk() {
-		e = either[T, error]{t: _LEFT, left: r.Ok().Unwrap()}
+		e = either[T, E]{t: _LEFT, left: r.Ok().Unwrap()}
 	} else {
-		e = either[T, error]{t: _RIGHT, right: r.Err().Unwrap()}
+		e = either[T, E]{t: _RIGHT, right: r.Err().Unwrap()}
 	}
 	return &e
 }

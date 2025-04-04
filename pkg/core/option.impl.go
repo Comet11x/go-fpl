@@ -131,10 +131,10 @@ func (o *option[T]) SwapAsPtrFrom(c func() *T) T {
 	return prev
 }
 
-func (o *option[T]) ToTuple() (T, bool) {
+func (o *option[T]) AsTuple() (T, bool) {
 	return o.value, o.IsSome()
 }
 
-func (o *option[T]) ToTupleAsPtr() (*T, bool) {
+func (o *option[T]) AsTupleOfPtr() (*T, bool) {
 	return &o.value, o.IsSome()
 }

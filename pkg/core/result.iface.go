@@ -1,73 +1,93 @@
 package core
 
-type Result[T any] interface {
+type Result[T any, E any] interface {
 
-	// Returns true if the item of Result is Ok[T]
+	// Returns true if the item of Result is Ok[T, E].
 	IsOk() bool
 
-	// Returns false if the item of Result is Err[T]
+	// Returns false if the item of Result is Err[T, E].
 	IsErr() bool
 
-	// Calls a callback if the result is Ok
-	IfOk(func(value T)) Result[T]
+	// Calls a callback if the result is Ok[T, E].
+	// fn is a function which gets the ok value of T.
+	// It returns itself.
+	IfOk(fn func(value T)) Result[T, E]
 
-	// Calls a callback if the result is Ok
-	IfOkAsPtr(func(value *T)) Result[T]
+	// Calls a callback if the result is Ok[T, E]
+	// fn is a function which gets the ok value as a pointer.
+	// It returns itself.
+	IfOkAsPtr(func(value *T)) Result[T, E]
 
-	// Calls a callback if the result is Error
-	IfErr(func(err error)) Result[T]
+	// Calls a callback if the result is Err[T, E].
+	// fn is a function which gets the err value.
+	// It returns itself.
+	IfErr(fn func(err E)) Result[T, E]
 
-	// Returns a value of the result or an alternative value
+	// Calls a callback if the result is Error.
+	// fn is a function which gets the err value as a pointer.
+	// It returns itself.
+	IfErrAsPtr(fn func(err *E)) Result[T, E]
+
+	// Returns the contained ok value if the result is Ok[T, E], otherwise it raises panic with the given message.
+	Expect(msg string) T
+
+	// Returns the contained ok value if the result is Ok[T, E], otherwise it raises panic.
+	Unwrap() T
+
+	// Returns the contained ok if the result is Ok[T, E], otherwise it returns the given value.
+	// value is an alternative value which may be returned if the result is Err[T, E].
 	UnwrapOr(value T) T
 
-	// Returns a default value
+	// Returns the contained ok if the result is Ok[T, E], otherwise it returns a default value of T.
 	UnwrapOrDefault() T
 
-	// Returns a value of the result or a value from the function
-	UnwrapOrValueFrom(c func() T) T
+	// Returns the contained ok if the result is Ok[T, E], otherwise it returns a default value of T which is returned by the callback function
+	// fn is a callback function
+	UnwrapOrElse(fn func() T) T
+
+	// Returns a pointer of the stored value or raise
+	ExpectAsPtr(msg string) *T
 
 	// Returns a pointer of a value of the result or an alternative pointer
 	UnwrapAsPtrOr(value *T) *T
 
 	// Returns a pointer of a value of the result or a pointer from the function
-	UnwrapAsPtrOrPtrFrom(c func() *T) *T
+	UnwrapAsPtrOrElse(fn func() *T) *T
 
-	// Returns the contained Ok[T] value.
-	Unwrap() T
+	// Returns an contained error value if the result is the Err[T, E], otherwise it raises a panic.
+	UnwrapErr() E
 
-	// Returns an error of the result
-	UnwrapErr() error
+	// Returns an error value if the result is the Err[T, E], otherwise it returns an alternative error which is given as the parameter of this method.
+	// err is an alternative error which is returned if the result is Ok[T, E]
+	UnwrapErrOr(err E) E
 
-	// Returns an error of the result or an alternative error
-	UnwrapErrOr(error) error
-
-	//
-	UnwrapErrOrDefault() error
+	// Returns the contained error value or an error value by default
+	UnwrapErrOrDefault() E
 
 	// Returns the contained Ok[T] value as a pointer
 	UnwrapAsPtr() *T
 
 	// Returns a tuple which has the contained Ok[T] value
-	ToTuple() (T, error)
-	ToTupleAsPtr() (*T, error)
+	AsTuple() (T, E)
 
-	ToEither() Either[T, error]
-	ToEitherPtr() Either[*T, error]
+	// Returns a tuple of pointers
+	AsTupleOfPtr() (*T, *E)
 
+	// Returns a tuple of the ok value and the error value
+	AsEither() Either[T, E]
+
+	// Returns the ok value and the error value as pointers which are wrapped in Either.
+	AsEitherPtr() Either[*T, *E]
+
+	// Returns the contained ok value which is wrapped in Option.
 	Ok() Option[T]
-	OkPtr() Option[*T]
 
-	Err() Option[error]
+	// Returns the contained ok value as a pointer of T which is wrapped in Option
+	OkAsPtr() Option[*T]
 
-	MapOk(fn func(value T) T) Result[T]
-	MapOkFrom(fn func(value T) Result[T]) Result[T]
+	// Returns the contained error value which is wrapped in Option
+	Err() Option[E]
 
-	MapOkAsOption(fn func(value T) T) Option[T]
-	MapOkAsOptionFrom(fn func(value T) Option[T]) Option[T]
-
-	MapErr(fn func(err error) T) Result[T]
-	MapErrFrom(fn func(err error) Result[T]) Result[T]
-
-	MapErrAs(fn func(err error) T) Option[T]
-	MapErrAsFrom(fn func(err error) Option[T]) Option[T]
+	// Returns the contained error value as a pointer of E which is wrapped in Option
+	ErrAsPtr() Option[*E]
 }

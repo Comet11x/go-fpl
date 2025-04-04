@@ -13,7 +13,7 @@ func (p *pair[F, S]) Second() S {
 	return p.s
 }
 
-func (p *pair[F, S]) ToTuple() (F, S) {
+func (p *pair[F, S]) AsTuple() (F, S) {
 	return p.f, p.s
 }
 

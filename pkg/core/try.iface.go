@@ -27,6 +27,6 @@ type Try[T any] interface {
 	// It can be empty if the execution finishes successfully.
 	Failure() Option[any]
 
-	// Translates Try[T] to Result[T]
-	AsResult(errorFactory ...func(any) error) Result[T]
+	// Translates Try[T] to Result[T, error]
+	AsResult(errorFactory ...func(any) error) Result[T, error]
 }

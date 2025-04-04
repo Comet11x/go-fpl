@@ -14,7 +14,7 @@ func Some[T any](value T) Option[T] {
 }
 
 func None[T any]() Option[T] {
-	o := option[T]{t: _NONE}
+	o := option[T]{}
 	return &o
 }
 
@@ -22,7 +22,7 @@ func MapSome[T any, U any](o Option[T], fn func(v T) U) Option[U] {
 	if o.IsNone() {
 		return None[U]()
 	} else {
-		return Some[U](fn(o.Unwrap()))
+		return Some(fn(o.Unwrap()))
 	}
 }
 
@@ -36,7 +36,7 @@ func MapSomeFrom[T any, U any](o Option[T], fn func(v T) Option[U]) Option[U] {
 
 func MapNone[T any, U any](o Option[T], fn func() U) Option[U] {
 	if o.IsNone() {
-		return Some[U](fn())
+		return Some(fn())
 	} else {
 		return None[U]()
 	}
@@ -50,15 +50,15 @@ func MapNoneFrom[T any, U any](o Option[T], fn func() Option[U]) Option[U] {
 	}
 }
 
-func MapOkAsOption[T any, U any](r Result[T], fn func(T) U) Option[U] {
+func MapOkAsOption[T any, E any, U any](r Result[T, E], fn func(T) U) Option[U] {
 	return MapSome(r.Ok(), fn)
 }
 
-func MapOkAsOptionFrom[T any, U any](r Result[T], fn func(T) Option[U]) Option[U] {
+func MapOkAsOptionFrom[T any, E any, U any](r Result[T, E], fn func(T) Option[U]) Option[U] {
 	return MapSomeFrom(r.Ok(), fn)
 }
 
-func MapErrAsOption[T any, U any](r Result[T], fn func() U) Option[U] {
+func MapErrAsOption[T any, E any, U any](r Result[T, E], fn func() U) Option[U] {
 	if r.IsErr() {
 		return Some(fn())
 	} else {
@@ -66,9 +66,9 @@ func MapErrAsOption[T any, U any](r Result[T], fn func() U) Option[U] {
 	}
 }
 
-func MapErrAsOptionFrom[T any, U any](r Result[T], fn func() Option[U]) Option[U] {
+func MapErrAsOptionFrom[T any, E any, U any](r Result[T, E], fn func(E) Option[U]) Option[U] {
 	if r.IsErr() {
-		return fn()
+		return fn(r.UnwrapErr())
 	} else {
 		return None[U]()
 	}

@@ -93,7 +93,7 @@ func (t *try[A, R]) Failure() Option[any] {
 	}
 }
 
-func (t *try[A, R]) AsResult(errorFactory ...func(any) error) Result[R] {
+func (t *try[A, R]) AsResult(errorFactory ...func(any) error) Result[R, error] {
 	t.test()
 	if t.status == _TRY_ERR {
 		var err error
@@ -104,6 +104,6 @@ func (t *try[A, R]) AsResult(errorFactory ...func(any) error) Result[R] {
 		}
 		return Err[R](err)
 	} else {
-		return Ok(t.r)
+		return Ok[R, error](t.r)
 	}
 }

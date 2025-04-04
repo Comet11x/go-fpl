@@ -7,9 +7,9 @@ import (
 
 func TestCreateOkResult(t *testing.T) {
 	s := "foo"
-	r := Ok[string](s)
+	r := Ok[string, error](s)
 	if !r.IsOk() || r.IsErr() {
-		t.Fatal("it must be Ok[string]")
+		t.Fatal("it must be Ok[string, error]")
 	}
 }
 
@@ -23,7 +23,7 @@ func TestCreateErrResult(t *testing.T) {
 
 func TestUnwrapAsPtrForOk(t *testing.T) {
 	i := 1
-	r := Ok[int](i)
+	r := Ok[int, error](i)
 	o := r.UnwrapAsPtr()
 	if i != *o {
 		t.Fatalf("it must be equal %d", i)
@@ -32,7 +32,7 @@ func TestUnwrapAsPtrForOk(t *testing.T) {
 
 func TestUnwrapForOk(t *testing.T) {
 	s := "foo"
-	r := Ok[string](s)
+	r := Ok[string, error](s)
 	if r.Unwrap() != s {
 		t.Fatalf("it must be equal %s ", s)
 	}
@@ -55,7 +55,7 @@ func TestUnwrapForErr(t *testing.T) {
 
 func TestUnwrapOrForOk(t *testing.T) {
 	s := "foo"
-	r := Ok[string](s)
+	r := Ok[string, error](s)
 
 	value := r.UnwrapOr("bar")
 
@@ -67,7 +67,7 @@ func TestUnwrapOrForOk(t *testing.T) {
 
 func TestUnwrapForOK(t *testing.T) {
 	s := "bar"
-	r := Ok[string](s)
+	r := Ok[string, error](s)
 	if r.Ok().Unwrap() != s {
 		t.Fatalf("it must be equal %s", s)
 	}
@@ -93,7 +93,7 @@ func TestUnwrapOrForErr(t *testing.T) {
 func TestUnwrapAsPtrOrForOk(t *testing.T) {
 	s := "foo"
 	s2 := "bar"
-	r := Ok[string](s)
+	r := Ok[string, error](s)
 
 	value := r.UnwrapAsPtrOr(&s2)
 
@@ -122,9 +122,9 @@ func TestUnwrapAsPtrOrForErr(t *testing.T) {
 
 func TestOkPtrForOk(t *testing.T) {
 	v := 1
-	r := Ok[int](v)
+	r := Ok[int, error](v)
 
-	o := r.OkPtr()
+	o := r.OkAsPtr()
 
 	if o.IsNone() || !o.IsSome() {
 		t.Fatal("it mut be Some[int]")
@@ -134,7 +134,7 @@ func TestOkPtrForOk(t *testing.T) {
 func TestOkPtrForErr(t *testing.T) {
 	r := Err[int](errors.New("error"))
 
-	o := r.OkPtr()
+	o := r.OkAsPtr()
 
 	if !o.IsNone() || o.IsSome() {
 		t.Fatal("it mut be None[int]")
@@ -143,9 +143,9 @@ func TestOkPtrForErr(t *testing.T) {
 
 func TestToTupleForOk(t *testing.T) {
 	v1 := 1
-	r := Ok[int](v1)
+	r := Ok[int, error](v1)
 
-	v2, err := r.ToTuple()
+	v2, err := r.AsTuple()
 
 	if v1 != v2 {
 		t.Fatal("it must be equal")
@@ -159,7 +159,7 @@ func TestToTupleForOk(t *testing.T) {
 func TestToTupleForErr(t *testing.T) {
 	r := Err[int](errors.New("error"))
 
-	_, err := r.ToTuple()
+	_, err := r.AsTuple()
 
 	if err == nil {
 		t.Fatal("it must be not equal")

@@ -1,6 +1,6 @@
 package core
 
 const (
-	_SOME = 0
-	_NONE = 1
+	_SOME = 1
+	_NONE = 0
 )
