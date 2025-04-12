@@ -84,7 +84,7 @@ func (e *either[L, R]) AsTuplePtr() (*L, *R) {
 
 func (e *either[L, R]) UnwrapLeft() L {
 	if e.IsRight() {
-		panic("called `Either.UnwrapLeft()` on an `Right` value")
+		panic("called `Either.UnwrapLeft()` on a `Right` value")
 	}
 	return e.left
 }
@@ -107,7 +107,7 @@ func (e *either[L, R]) UnwrapLeftOrFrom(c func() L) L {
 
 func (e *either[L, R]) UnwrapLeftAsPtr() *L {
 	if e.IsRight() {
-		panic("called `Either.UnwrapLeftAsPtr()` on an `Right` value")
+		panic("called `Either.UnwrapLeftAsPtr()` on a `Right` value")
 	}
 	return &e.left
 }
@@ -130,7 +130,7 @@ func (e *either[L, R]) UnwrapLeftAsPtrOrFrom(c func() *L) *L {
 
 func (e *either[L, R]) UnwrapRight() R {
 	if e.IsLeft() {
-		panic("called `Either.UnwrapRight()` on an `Left` value")
+		panic("called `Either.UnwrapRight()` on a `Left` value")
 	}
 
 	return e.right
@@ -154,7 +154,7 @@ func (e *either[L, R]) UnwrapRightOrFrom(c func() R) R {
 
 func (e *either[L, R]) UnwrapRightAsPtr() *R {
 	if e.IsLeft() {
-		panic("called `Either.UnwrapRightAsPtr()` on an `Left` value")
+		panic("called `Either.UnwrapRightAsPtr()` on a `Left` value")
 	}
 	return &e.right
 }
