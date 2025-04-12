@@ -113,7 +113,6 @@ func TestIfSomeAsPtr(t *testing.T) {
 	}
 }
 
-// This function tests IfNone method
 func TestIfNone(t *testing.T) {
 	o1 := None[string]()
 	isDone := false
