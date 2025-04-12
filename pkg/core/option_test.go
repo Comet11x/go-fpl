@@ -77,3 +77,50 @@ func TestMapSomeForNone(t *testing.T) {
 		t.Fatal("it must be None[int]")
 	}
 }
+
+func TestIfSome(t *testing.T) {
+	o1 := Some("Test")
+	isDone := false
+	o1.IfSome(func(value string) {
+		if value != "Test" {
+			t.Fatal("it must be equal")
+
+		} else {
+			isDone = true
+		}
+	})
+	if !isDone {
+		t.Fatal("it must be true")
+	}
+}
+
+func TestIfSomeAsPtr(t *testing.T) {
+	o1 := Some("Test")
+	isDone := false
+	o1.IfSomeAsPtr(func(value *string) {
+		if value == nil {
+			t.Fatal("it must be equal")
+
+		}
+		if *value != "Test" {
+			t.Fatalf("expected 'Test' Value, given '%s'", *value)
+		} else {
+			isDone = true
+		}
+	})
+	if !isDone {
+		t.Fatal("it must be true")
+	}
+}
+
+func TestIfNone(t *testing.T) {
+	o1 := None[string]()
+	isDone := false
+	o1.IfNone(func() {
+
+		isDone = true
+	})
+	if !isDone {
+		t.Error("not executed for None Option")
+	}
+}
