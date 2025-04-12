@@ -1,92 +1,95 @@
 package core
 
-type either[A any, B any] struct {
+type either[L any, R any] struct {
 	t     int
-	left  A
-	right B
+	left  L
+	right R
 }
 
-func (e *either[A, B]) IsRight() bool {
+func (e *either[L, R]) IsRight() bool {
 	return e.t == _RIGHT
 }
 
-func (e *either[A, B]) IsLeft() bool {
+func (e *either[L, R]) IsLeft() bool {
 	return e.t == _LEFT
 }
 
-func (e *either[A, B]) IfLeft(fn func(A)) Either[A, B] {
+func (e *either[L, R]) IfLeft(fn func(L)) Either[L, R] {
 	if e.IsLeft() {
 		fn(e.left)
 	}
 	return e
 }
 
-func (e *either[A, B]) IfLeftAsPtr(fn func(*A)) Either[A, B] {
+func (e *either[L, R]) IfLeftAsPtr(fn func(*L)) Either[L, R] {
 	if e.IsLeft() {
 		fn(&e.left)
 	}
 	return e
 }
 
-func (e *either[A, B]) IfRight(fn func(B)) Either[A, B] {
+func (e *either[L, R]) IfRight(fn func(R)) Either[L, R] {
 	if e.IsRight() {
 		fn(e.right)
 	}
 	return e
 }
 
-func (e *either[A, B]) IfRightAsPtr(fn func(*B)) Either[A, B] {
+func (e *either[L, R]) IfRightAsPtr(fn func(*R)) Either[L, R] {
 	if e.IsRight() {
 		fn(&e.right)
 	}
 	return e
 }
 
-func (e *either[A, B]) Right() Option[B] {
+func (e *either[L, R]) Right() Option[R] {
 	if e.IsRight() {
 		return Some(e.right)
 	} else {
-		return None[B]()
+		return None[R]()
 	}
 }
 
-func (e *either[A, B]) RightAsPtr() Option[*B] {
+func (e *either[L, R]) RightAsPtr() Option[*R] {
 	if e.IsRight() {
 		return Some(&e.right)
 	} else {
-		return None[*B]()
+		return None[*R]()
 	}
 }
 
-func (e *either[A, B]) Left() Option[A] {
+func (e *either[L, R]) Left() Option[L] {
 	if e.IsLeft() {
 		return Some(e.left)
 	} else {
-		return None[A]()
+		return None[L]()
 	}
 }
 
-func (e *either[A, B]) LeftAsPtr() Option[*A] {
+func (e *either[L, R]) LeftAsPtr() Option[*L] {
 	if e.IsLeft() {
 		return Some(&e.left)
 	} else {
-		return None[*A]()
+		return None[*L]()
 	}
 }
 
-func (e *either[A, B]) ToTuple() (A, B) {
+func (e *either[L, R]) AsTuple() (L, R) {
 	return e.left, e.right
 }
 
-func (e *either[A, B]) ToTuplePtr() (*A, *B) {
+func (e *either[L, R]) AsTuplePtr() (*L, *R) {
 	return &e.left, &e.right
 }
 
-func (e *either[A, B]) UnwrapLeft() A {
+func (e *either[L, R]) UnwrapLeft() L {
+	if e.IsRight() {
+		panic("called `Either.UnwrapLeft()` on an `Right` value")
+	}
 	return e.left
 }
 
-func (e *either[A, B]) UnwrapLeftOr(v A) A {
+func (e *either[L, R]) UnwrapLeftOr(v L) L {
 	if e.IsLeft() {
 		return e.left
 	} else {
@@ -94,7 +97,7 @@ func (e *either[A, B]) UnwrapLeftOr(v A) A {
 	}
 }
 
-func (e *either[A, B]) UnwrapLeftOrFrom(c func() A) A {
+func (e *either[L, R]) UnwrapLeftOrFrom(c func() L) L {
 	if e.IsLeft() {
 		return e.left
 	} else {
@@ -102,11 +105,22 @@ func (e *either[A, B]) UnwrapLeftOrFrom(c func() A) A {
 	}
 }
 
-func (e *either[A, B]) UnwrapLeftAsPtr() *A {
+func (e *either[L, R]) UnwrapLeftAsPtr() *L {
+	if e.IsRight() {
+		panic("called `Either.UnwrapLeftAsPtr()` on an `Right` value")
+	}
 	return &e.left
 }
 
-func (e *either[A, B]) UnwrapLeftAsPtrOrFrom(c func() *A) *A {
+func (e *either[L, R]) UnwrapLeftAsPtrOr(value *L) *L {
+	if e.IsLeft() {
+		return &e.left
+	} else {
+		return value
+	}
+}
+
+func (e *either[L, R]) UnwrapLeftAsPtrOrFrom(c func() *L) *L {
 	if e.IsLeft() {
 		return &e.left
 	} else {
@@ -114,11 +128,15 @@ func (e *either[A, B]) UnwrapLeftAsPtrOrFrom(c func() *A) *A {
 	}
 }
 
-func (e *either[A, B]) UnwrapRight() B {
+func (e *either[L, R]) UnwrapRight() R {
+	if e.IsLeft() {
+		panic("called `Either.UnwrapRight()` on an `Left` value")
+	}
+
 	return e.right
 }
 
-func (e *either[A, B]) UnwrapRightOr(v B) B {
+func (e *either[L, R]) UnwrapRightOr(v R) R {
 	if e.IsRight() {
 		return e.right
 	} else {
@@ -126,7 +144,7 @@ func (e *either[A, B]) UnwrapRightOr(v B) B {
 	}
 }
 
-func (e *either[A, B]) UnwrapRightOrFrom(c func() B) B {
+func (e *either[L, R]) UnwrapRightOrFrom(c func() R) R {
 	if e.IsRight() {
 		return e.right
 	} else {
@@ -134,11 +152,22 @@ func (e *either[A, B]) UnwrapRightOrFrom(c func() B) B {
 	}
 }
 
-func (e *either[A, B]) UnwrapRightAsPtr() *B {
+func (e *either[L, R]) UnwrapRightAsPtr() *R {
+	if e.IsLeft() {
+		panic("called `Either.UnwrapRightAsPtr()` on an `Left` value")
+	}
 	return &e.right
 }
 
-func (e *either[A, B]) UnwrapRightAsPtrOrFrom(c func() *B) *B {
+func (e *either[L, R]) UnwrapRightAsPtrOr(value *R) *R {
+	if e.IsRight() {
+		return &e.right
+	} else {
+		return value
+	}
+}
+
+func (e *either[L, R]) UnwrapRightAsPtrOrFrom(c func() *R) *R {
 	if e.IsRight() {
 		return &e.right
 	} else {
