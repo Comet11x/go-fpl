@@ -81,6 +81,18 @@ func MapLeft[L any, R any, L2 any](e Either[L, R], fn func(value L) L2) Either[L
 	return &other
 }
 
+// Maps `Either[L, R]` to `Either[L2, R]` by applying a function to a pointer to a contained `Left`value,
+// leaving an `Right` value untouched.
+func MapLeftPtr[L any, R any, L2 any](e Either[L, R], fn func(value *L) L2) Either[L2, R] {
+	var other either[L2, R]
+	if e.IsLeft() {
+		other = either[L2, R]{t: _LEFT, left: fn(e.Left().UnwrapAsPtr())}
+	} else {
+		other = either[L2, R]{t: _RIGHT, right: e.Right().Unwrap()}
+	}
+	return &other
+}
+
 // Map `Either[L, R]` to `Either[L2, R]` by applying a function to a contained `Left`value,
 // leaving an `Right` value untouched.
 // The function returns a new `Either[L2, R]`.
