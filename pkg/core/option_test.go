@@ -94,6 +94,7 @@ func TestIfSome(t *testing.T) {
 	}
 }
 
+// it tests IfSomeAsPtr
 func TestIfSomeAsPtr(t *testing.T) {
 	o1 := Some("Test")
 	isDone := false
